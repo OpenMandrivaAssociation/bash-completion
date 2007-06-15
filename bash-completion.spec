@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 20060301
-%define release %mkrel 10
+%define release %mkrel 11
 
 Name:		%{name}
 Version:	%{version}
@@ -21,6 +21,7 @@ Patch19:	bash-completion-20060301.kernel-completion.patch
 Patch20:    bash-completion-20060301.better-command-completion.patch
 Patch21:    bash-completion-20060301.cdrkit-completion.patch
 Patch22:    bash-completion-20060301.bibtex.patch
+Patch23:    bash-completion-20060301.better-perl-completion.patch
 Requires:	bash >= 2.05
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}
@@ -42,6 +43,7 @@ the programmable completion feature of bash.
 %patch20
 %patch21
 %patch22
+%patch23
 chmod 644 contrib/*
 rm -f contrib/dsniff
 rm -f contrib/freeciv
