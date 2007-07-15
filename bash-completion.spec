@@ -22,6 +22,7 @@ Patch20:    bash-completion-20060301.better-command-completion.patch
 Patch21:    bash-completion-20060301.cdrkit-completion.patch
 Patch22:    bash-completion-20060301.bibtex.patch
 Patch23:    bash-completion-20060301.better-perl-completion.patch
+Patch24:	bash-completion-20060301-mplayer-more-completion.patch
 Requires:	bash >= 2.05
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}
@@ -44,6 +45,7 @@ the programmable completion feature of bash.
 %patch21
 %patch22
 %patch23
+%patch24
 chmod 644 contrib/*
 rm -f contrib/dsniff
 rm -f contrib/freeciv
