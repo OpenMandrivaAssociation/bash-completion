@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 20060301
-%define release %mkrel 12
+%define release %mkrel 13
 
 Name:		%{name}
 Version:	%{version}
@@ -75,16 +75,15 @@ cat <<'EOF' >> %{buildroot}%_sysconfdir/profile.d/bash-completion.sh
 #!/bin/sh
 # system-wide activation
 if [ "$PS1" ]  && [ -n "$BASH" ]; then
-    # source user config file if available,
-    # otherwise system wide config file
-    if [ -f $HOME/.bash_completion ]; then
-	. $HOME/.bash_completion
-    else 
+    # source system wide config file
 	. %_sysconfdir/sysconfig/bash-completion
+    # source user config file if available,
+    if [ -f $HOME/.bash_completion ]; then
+        . $HOME/.bash_completion
     fi
 
     if [ -n "$ENABLE_BASH_COMPLETION" ]; then
-	. %_sysconfdir/bash_completion
+        . %_sysconfdir/bash_completion
     fi
 fi
 EOF
@@ -92,7 +91,7 @@ chmod +x %{buildroot}%_sysconfdir/profile.d/bash-completion.sh
 
 mkdir -p %{buildroot}%_sysconfdir/sysconfig
 cat <<'EOF' >> %{buildroot}%_sysconfdir/sysconfig/bash-completion
-ENABLE_BASH_COMPLETION=
+ENABLE_BASH_COMPLETION=1
 COMP_CVS_REMOTE=
 COMP_SCP_REMOTE=
 COMP_CONFIGURE_HINTS=
@@ -103,13 +102,13 @@ EOF
 
 mkdir -p %{buildroot}%_sysconfdir/skel
 cat <<'EOF' >> %{buildroot}%_sysconfdir/skel/.bash_completion
-ENABLE_BASH_COMPLETION=1
-COMP_CVS_REMOTE=
-COMP_SCP_REMOTE=
-COMP_CONFIGURE_HINTS=
-COMP_TAR_INTERNAL_PATHS=
-COMP_IWCONFIG_SCAN=
-COMP_RPM_DATABASE=
+#ENABLE_BASH_COMPLETION=1
+#COMP_CVS_REMOTE=
+#COMP_SCP_REMOTE=
+#COMP_CONFIGURE_HINTS=
+#COMP_TAR_INTERNAL_PATHS=
+#COMP_IWCONFIG_SCAN=
+#COMP_RPM_DATABASE=
 EOF
 
 cat > README.urpmi <<EOF
