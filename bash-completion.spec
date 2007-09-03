@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 20060301
-%define release %mkrel 14
+%define release %mkrel 15
 
 Name:		%{name}
 Version:	%{version}
@@ -24,6 +24,7 @@ Patch22:    bash-completion-20060301.bibtex.patch
 Patch23:    bash-completion-20060301.better-perl-completion.patch
 Patch24:	bash-completion-20060301-mplayer-more-completion.patch
 Patch25:	bash-completion-20060301-lzma-completion.patch
+Patch26: bash_completion-rpm-suggests.patch
 Requires:	bash >= 2.05
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}
@@ -48,6 +49,7 @@ the programmable completion feature of bash.
 %patch23
 %patch24 -p1 -b .more_formats
 %patch25 -p1 -b .lzma_support
+%patch26 -p1
 
 chmod 644 contrib/*
 rm -f contrib/dsniff
