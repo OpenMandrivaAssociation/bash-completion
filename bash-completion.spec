@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 20060301
-%define release %mkrel 15
+%define release %mkrel 16
 
 Name:		%{name}
 Version:	%{version}
@@ -49,7 +49,7 @@ the programmable completion feature of bash.
 %patch23
 %patch24 -p1 -b .more_formats
 %patch25 -p1 -b .lzma_support
-%patch26 -p1
+%patch26 -p1 -b .rpm-suggests
 
 chmod 644 contrib/*
 rm -f contrib/dsniff
