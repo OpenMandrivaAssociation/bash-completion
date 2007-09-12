@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 20060301
-%define release %mkrel 16
+%define release %mkrel 17
 
 Name:		%{name}
 Version:	%{version}
@@ -113,27 +113,23 @@ cat <<'EOF' >> %{buildroot}%_sysconfdir/skel/.bash_completion
 #COMP_RPM_DATABASE=
 EOF
 
-cat > README.urpmi <<EOF
+cat > README.install.urpmi <<EOF
 Mandriva RPM specific notes
 
-Activation
-----------
-Programmable bash completion can be enabled in two different ways. For
-system-wide activation, define ENABLE_BASH_COMPLETION in
-/etc/sysconfig/bash-completion. For user activation, define
-ENABLE_BASH_COMPLETION in ~/.bash_completion.
+Programmable bash completion except for slow completions is enabled
+by default. These settings can be changed system-wide in
+/etc/sysconfig/bash-completion. Users may override these settings in
+their ~/.bash_completion files. New users get a skeleton
+configuration file automatically, while existing users can copy
+/etc/skel/.bash_completion into their home directories if they want
+to edit their completion settings.
+EOF
 
-In both cases, a certain number of environment variables can be used to
-configure programmable bash completion behaviour. All slow completions,
-notably, are disabled by default.
-
-Upgrade
--------
+cat > README.20050121-5.upgrade.urpmi <<EOF
 Starting from 20050121-5mdk, bash completion activation was modified and is now
 more consistant with other user environment activation systems. New users should
 automatically get a working configuration, but existing users will have to
-remove the explicit sourcing of /etc/bash_completion from their ~/.bashrc, and
-copy /etc/skel/.bash_completion file in their home directory manually.
+remove the explicit sourcing of /etc/bash_completion from their ~/.bashrc.
 EOF
 
 %clean
@@ -141,7 +137,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc README Changelog contrib/* README.urpmi
+%doc README Changelog contrib/* README.*.urpmi
 %{_sysconfdir}/bash_completion
 %{_sysconfdir}/bash_completion.d
 %{_sysconfdir}/profile.d/bash-completion.sh
