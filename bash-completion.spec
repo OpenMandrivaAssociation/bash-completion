@@ -10,21 +10,21 @@ Group:		Shells
 License:	GPL
 URL:		http://www.caliban.org/bash/
 Source0:	http://www.caliban.org/files/bash/%{name}-%{version}.tar.bz2
-Patch1:		bash-completion-20050121.device_ids.patch
-Patch2:		bash-completion-20060301.alias-completion.patch
-Patch5:		bash-completion-20050712.scp-remote.patch
-Patch8:		bash-completion-20050721.rpm-database.patch
-Patch10:	bash-completion-20050121.disable-user-completion.patch
-Patch17:	bash-completion-20060301.evince.patch
-Patch18:	bash-completion-20060301.fix-old-rpmfiles-pattern.patch
-Patch19:	bash-completion-20060301.kernel-completion.patch
-Patch20:    bash-completion-20060301.better-command-completion.patch
-Patch21:    bash-completion-20060301.cdrkit-completion.patch
-Patch22:    bash-completion-20060301.bibtex.patch
-Patch23:    bash-completion-20060301.better-perl-completion.patch
+Patch1:		bash-completion-20050121-device_ids.patch
+Patch2:		bash-completion-20060301-alias-completion.patch
+Patch5:		bash-completion-20050712-scp-remote.patch
+Patch8:		bash-completion-20050721-rpm-database.patch
+Patch10:	bash-completion-20050121-disable-user-completion.patch
+Patch17:	bash-completion-20060301-evince.patch
+Patch18:	bash-completion-20060301-fix-old-rpmfiles-pattern.patch
+Patch19:	bash-completion-20060301-kernel-completion.patch
+Patch20:    bash-completion-20060301-better-command-completion.patch
+Patch21:    bash-completion-20060301-cdrkit-completion.patch
+Patch22:    bash-completion-20060301-bibtex.patch
+Patch23:    bash-completion-20060301-better-perl-completion.patch
 Patch24:	bash-completion-20060301-mplayer-more-completion.patch
 Patch25:	bash-completion-20060301-lzma-completion.patch
-Patch26: bash_completion-rpm-suggests.patch
+Patch26:    bash-completion-20060301-rpm-suggests.patch
 Patch27:    bash-completion-20060301-getent-completion.patch
 Patch28:    bash-completion-20060301-better-screen-completion.patch
 Requires:	bash >= 2.05
@@ -42,16 +42,16 @@ the programmable completion feature of bash.
 %patch5
 %patch8
 %patch10
-%patch17 -p1 -b .evince
+%patch17
 %patch18
 %patch19
 %patch20
 %patch21
 %patch22
 %patch23
-%patch24 -p1 -b .more_formats
-%patch25 -p1 -b .lzma_support
-%patch26 -p1 -b .rpm-suggests
+%patch24
+%patch25
+%patch26
 %patch27
 %patch28
 
