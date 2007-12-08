@@ -25,6 +25,8 @@ Patch23:    bash-completion-20060301.better-perl-completion.patch
 Patch24:	bash-completion-20060301-mplayer-more-completion.patch
 Patch25:	bash-completion-20060301-lzma-completion.patch
 Patch26: bash_completion-rpm-suggests.patch
+Patch27:    bash-completion-20060301-getent-completion.patch
+Patch28:    bash-completion-20060301-better-screen-completion.patch
 Requires:	bash >= 2.05
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}
@@ -50,6 +52,8 @@ the programmable completion feature of bash.
 %patch24 -p1 -b .more_formats
 %patch25 -p1 -b .lzma_support
 %patch26 -p1 -b .rpm-suggests
+%patch27
+%patch28
 
 chmod 644 contrib/*
 rm -f contrib/dsniff
