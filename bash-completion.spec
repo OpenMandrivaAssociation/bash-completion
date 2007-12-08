@@ -77,7 +77,7 @@ mkdir -p %{buildroot}%_sysconfdir/bash_completion.d
 install -m 644 bash_completion %{buildroot}%_sysconfdir
 
 mkdir -p %{buildroot}%_sysconfdir/profile.d/
-cat <<'EOF' >> %{buildroot}%_sysconfdir/profile.d/bash-completion.sh
+cat <<'EOF' >> %{buildroot}%_sysconfdir/profile.d/20bash-completion.sh
 #!/bin/sh
 # system-wide activation
 if [ "$PS1" ]  && [ -n "$BASH" ]; then
@@ -93,7 +93,6 @@ if [ "$PS1" ]  && [ -n "$BASH" ]; then
     fi
 fi
 EOF
-chmod +x %{buildroot}%_sysconfdir/profile.d/bash-completion.sh
 
 mkdir -p %{buildroot}%_sysconfdir/sysconfig
 cat <<'EOF' >> %{buildroot}%_sysconfdir/sysconfig/bash-completion
@@ -144,7 +143,7 @@ rm -rf %{buildroot}
 %doc README Changelog contrib/* README.*.urpmi
 %{_sysconfdir}/bash_completion
 %{_sysconfdir}/bash_completion.d
-%{_sysconfdir}/profile.d/bash-completion.sh
+%{_sysconfdir}/profile.d/20bash-completion.sh
 %config(noreplace) %{_sysconfdir}/sysconfig/bash-completion
 %config(noreplace) %{_sysconfdir}/skel/.bash_completion
 
