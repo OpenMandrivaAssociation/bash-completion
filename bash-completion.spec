@@ -96,23 +96,41 @@ EOF
 
 mkdir -p %{buildroot}%_sysconfdir/sysconfig
 cat <<'EOF' >> %{buildroot}%_sysconfdir/sysconfig/bash-completion
+# bash completion global configuration
+
+# enable bash completion
 ENABLE_BASH_COMPLETION=1
+# enable remote cvs completion
 COMP_CVS_REMOTE=
+# enable remote scp completion
 COMP_SCP_REMOTE=
+# enable configure arguments completion
 COMP_CONFIGURE_HINTS=
+# enable tar archive internal path completion
 COMP_TAR_INTERNAL_PATHS=
+# enable wireless uid completion
 COMP_IWLIST_SCAN=
+# enable installed packages completion
 COMP_RPM_DATABASE=
 EOF
 
 mkdir -p %{buildroot}%_sysconfdir/skel
 cat <<'EOF' >> %{buildroot}%_sysconfdir/skel/.bash_completion
+# bash completion local configuration
+
+# enable bash completion
 #ENABLE_BASH_COMPLETION=1
+# enable remote cvs completion
 #COMP_CVS_REMOTE=
+# enable remote scp completion
 #COMP_SCP_REMOTE=
+# enable configure arguments completion
 #COMP_CONFIGURE_HINTS=
+# enable tar archive internal path completion
 #COMP_TAR_INTERNAL_PATHS=
+# enable wireless uid completion
 #COMP_IWCONFIG_SCAN=
+# enable installed packages completion
 #COMP_RPM_DATABASE=
 EOF
 
