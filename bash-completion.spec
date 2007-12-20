@@ -29,6 +29,7 @@ Patch27:    bash-completion-20060301-getent-completion.patch
 Patch28:    bash-completion-20060301-better-screen-completion.patch
 Requires:	bash >= 2.05
 BuildArch:	noarch
+BuildRoot:	%{_tmppath}/%{name}-%{version}
 
 %description
 bash-completion is a collection of shell functions that take advantage of
