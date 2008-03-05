@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 20060301
-%define release %mkrel 19
+%define release %mkrel 20
 
 Name:		%{name}
 Version:	%{version}
@@ -18,15 +18,16 @@ Patch10:	bash-completion-20050121-disable-user-completion.patch
 Patch17:	bash-completion-20060301-evince.patch
 Patch18:	bash-completion-20060301-fix-old-rpmfiles-pattern.patch
 Patch19:	bash-completion-20060301-kernel-completion.patch
-Patch20:    bash-completion-20060301-better-command-completion.patch
-Patch21:    bash-completion-20060301-cdrkit-completion.patch
-Patch22:    bash-completion-20060301-bibtex.patch
-Patch23:    bash-completion-20060301-better-perl-completion.patch
+Patch20:	bash-completion-20060301-better-command-completion.patch
+Patch21:	bash-completion-20060301-cdrkit-completion.patch
+Patch22:	bash-completion-20060301-bibtex.patch
+Patch23:	bash-completion-20060301-better-perl-completion.patch
 Patch24:	bash-completion-20060301-mplayer-more-completion.patch
 Patch25:	bash-completion-20060301-lzma-completion.patch
-Patch26:    bash-completion-20060301-rpm-suggests.patch
-Patch27:    bash-completion-20060301-getent-completion.patch
-Patch28:    bash-completion-20060301-better-screen-completion.patch
+Patch26:	bash-completion-20060301-rpm-suggests.patch
+Patch27:	bash-completion-20060301-getent-completion.patch
+Patch28:	bash-completion-20060301-better-screen-completion.patch
+Patch29:	bash-completion-20060301-rpm-macros.patch
 Requires:	bash >= 2.05
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}
@@ -54,6 +55,7 @@ the programmable completion feature of bash.
 %patch26
 %patch27
 %patch28
+%patch29 -p1
 
 chmod 644 contrib/*
 rm -f contrib/dsniff
