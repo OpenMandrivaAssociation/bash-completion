@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 20060301
-%define release %mkrel 20
+%define release %mkrel 21
 
 Name:		%{name}
 Version:	%{version}
