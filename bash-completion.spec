@@ -28,7 +28,6 @@ Patch26:	bash-completion-20060301-rpm-suggests.patch
 Patch27:	bash-completion-20060301-getent-completion.patch
 Patch28:	bash-completion-20060301-better-screen-completion.patch
 Patch29:	bash-completion-20060301-rpm-macros.patch
-Patch30:	bash-completion-20060301-fix-scp-host-completion.patch
 Requires:	bash >= 2.05
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}
