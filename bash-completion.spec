@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 20060301
-%define release %mkrel 21
+%define release %mkrel 22
 
 Name:		%{name}
 Version:	%{version}
@@ -12,7 +12,7 @@ URL:		http://www.caliban.org/bash/
 Source0:	http://www.caliban.org/files/bash/%{name}-%{version}.tar.bz2
 Patch1:		bash-completion-20050121-device_ids.patch
 Patch2:		bash-completion-20060301-alias-completion.patch
-Patch5:		bash-completion-20050712-scp-remote.patch
+Patch5:		bash-completion-20060301-scp-remote.patch
 Patch8:		bash-completion-20050721-rpm-database.patch
 Patch10:	bash-completion-20050121-disable-user-completion.patch
 Patch17:	bash-completion-20060301-evince.patch
@@ -28,6 +28,7 @@ Patch26:	bash-completion-20060301-rpm-suggests.patch
 Patch27:	bash-completion-20060301-getent-completion.patch
 Patch28:	bash-completion-20060301-better-screen-completion.patch
 Patch29:	bash-completion-20060301-rpm-macros.patch
+Patch30:	bash-completion-20060301-fix-scp-host-completion.patch
 Requires:	bash >= 2.05
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}
