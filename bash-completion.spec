@@ -1,6 +1,6 @@
 %define name	bash-completion
-%define version 20060301
-%define release %mkrel 23
+%define version 20090108
+%define release %mkrel 1
 
 Name:		%{name}
 Version:	%{version}
@@ -10,20 +10,28 @@ Group:		Shells
 License:	GPL
 URL:		http://www.caliban.org/bash/
 Source0:	http://www.caliban.org/files/bash/%{name}-%{version}.tar.bz2
-Patch1:		bash-completion-20050121-device_ids.patch
-Patch2:		bash-completion-20060301-alias-completion.patch
-Patch5:		bash-completion-20060301-scp-remote.patch
-Patch8:		bash-completion-20050721-rpm-database.patch
+# new helper function: completion on devices PCI and USB ids
+Patch1:		bash-completion-20090108-device_ids.patch
+# configuration: allow to disable slow remote scp completion
+Patch5:		bash-completion-20090108-scp-remote.patch
+# configuration: allow to disable slow rpm database completion
+Patch8:		bash-completion-20090108-rpm-database.patch
+# configuration: make ~/.bash_completion sourced by profile scriptlet
 Patch10:	bash-completion-20050121-disable-user-completion.patch
-Patch17:	bash-completion-20060301-evince.patch
+# bug fix: wrong extension
 Patch18:	bash-completion-20060301-fix-old-rpmfiles-pattern.patch
+# new helper function: completion on installed kernels
 Patch19:	bash-completion-20060301-kernel-completion.patch
-Patch20:	bash-completion-20060301-better-command-completion.patch
+# better function: set words offset before launching foreign completion
+Patch20:	bash-completion-20090108-better-command-completion.patch
 Patch21:	bash-completion-20060301-cdrkit-completion.patch
 Patch22:	bash-completion-20060301-bibtex.patch
-Patch23:	bash-completion-20060301-better-perl-completion.patch
-Patch24:	bash-completion-20060301-mplayer-more-completion.patch
-Patch25:	bash-completion-20060301-lzma-completion.patch
+# cosmetic: makes _perl function use standard 'if options else' pattern
+Patch23:	bash-completion-20090108-more-standard-perl-completion.patch
+# add mp2 and xvid extensions
+Patch24:	bash-completion-20090108-mplayer-more-completions.patch
+# lzma command completion + man, info, tar and rpm fixes for lzma files
+Patch25:	bash-completion-20090108-lzma-completion.patch
 Patch26:	bash-completion-20060301-rpm-suggests.patch
 Patch27:	bash-completion-20060301-getent-completion.patch
 Patch28:	bash-completion-20060301-better-screen-completion.patch
@@ -37,21 +45,19 @@ bash-completion is a collection of shell functions that take advantage of
 the programmable completion feature of bash.
 
 %prep
-%setup -q -n bash_completion
-%patch1
-%patch2
-%patch5
-%patch8
+%setup -q -n bash-completion
+%patch1 -p 1
+%patch5 -p 1
+%patch8 -p 1
 %patch10
-%patch17
 %patch18
 %patch19
-%patch20
+%patch20 -p 1
 %patch21
 %patch22
-%patch23
-%patch24
-%patch25
+%patch23 -p 1
+%patch24 -p 1
+%patch25 -p 1
 %patch26
 %patch27
 %patch28
@@ -72,6 +78,9 @@ rm -f contrib/unrar
 rm -f contrib/snownews
 rm -f contrib/mailman
 rm -f contrib/bittorrent
+rm -f contrib/ssh
+rm -f contrib/_subversion
+rm -f contrib/svk
 
 %install
 rm -rf %{buildroot}
@@ -160,7 +169,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc README Changelog contrib/* README.*.urpmi
+%doc README contrib README.*.urpmi TODO
 %{_sysconfdir}/bash_completion
 %{_sysconfdir}/bash_completion.d
 %{_sysconfdir}/profile.d/20bash-completion.sh
