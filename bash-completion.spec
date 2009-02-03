@@ -1,5 +1,5 @@
 %define name	bash-completion
-%define version 20090202
+%define version 20090203
 %define release %mkrel 1
 
 Name:		%{name}
@@ -21,7 +21,6 @@ Patch10:	bash-completion-20050121-disable-user-completion.patch
 # better function: set words offset before launching foreign completion
 Patch20:	bash-completion-20090108-better-command-completion.patch
 Patch21:	bash-completion-20060301-cdrkit-completion.patch
-Patch22:	bash-completion-20090202-bibtex.patch
 # cosmetic: makes _perl function use standard 'if options else' pattern
 Patch23:	bash-completion-20090108-more-standard-perl-completion.patch
 Patch28:	bash-completion-20060301-better-screen-completion.patch
@@ -43,36 +42,19 @@ the programmable completion feature of bash.
 %patch10
 %patch20 -p 1
 %patch21
-%patch22 -p 1
 %patch23 -p 1
 %patch28
 %patch30 -p 1
 %patch31 -p 1
 
-chmod 644 contrib/*
-rm -f contrib/dsniff
-rm -f contrib/freeciv
-rm -f contrib/lilypond
-rm -f contrib/povray
-rm -f contrib/gkrellm
-rm -f contrib/cksfv
-rm -f contrib/sitecopy
-rm -f contrib/mcrypt
-rm -f contrib/gnatmake
-rm -f contrib/unace
-rm -f contrib/unrar
-rm -f contrib/snownews
-rm -f contrib/mailman
-rm -f contrib/bittorrent
-rm -f contrib/ssh
-rm -f contrib/lzma
-rm -f contrib/_subversion
-rm -f contrib/svk
-
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}%_sysconfdir/bash_completion.d
 install -m 644 bash_completion %{buildroot}%_sysconfdir
+
+install -d -m 755 %{buildroot}%{_datadir}/bash-completion
+install -m 644 contrib/* %{buildroot}%{_datadir}/bash-completion
+install -m 644 to_review/* %{buildroot}%{_datadir}/bash-completion
 
 mkdir -p %{buildroot}%_sysconfdir/profile.d/
 cat <<'EOF' >> %{buildroot}%_sysconfdir/profile.d/20bash-completion.sh
@@ -144,22 +126,296 @@ configuration file automatically, while existing users can copy
 to edit their completion settings.
 EOF
 
-cat > README.20050121-5.upgrade.urpmi <<EOF
-Starting from 20050121-5mdk, bash completion activation was modified and is now
-more consistant with other user environment activation systems. New users should
-automatically get a working configuration, but existing users will have to
-remove the explicit sourcing of /etc/bash_completion from their ~/.bashrc.
-EOF
+%triggerin -- bittorent > 5.2.2-3mdv2009.1
+ln -sf %{_datadir}/bash-completion/bittorent %{_sysconfdir}/bash_completion.d
+
+%triggerun -- bittorent > 5.2.2-3mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/bittorent
+fi
+
+%triggerin -- bluez > 4.27-1mdv2009.1
+ln -sf %{_datadir}/bash-completion/bluez-utils %{_sysconfdir}/bash_completion.d
+
+%triggerun -- bluez > 4.27-1mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/bluez-utils
+fi
+
+%triggerin -- bridge-utils > 1.4-2mdv2009.1
+ln -sf %{_datadir}/bash-completion/brctl %{_sysconfdir}/bash_completion.d
+
+%triggerun -- bridge-utils > 1.4-2mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/brctl
+fi
+
+%triggerin -- cksfv
+ln -sf %{_datadir}/bash-completion/cksfv %{_sysconfdir}/bash_completion.d
+
+%triggerun -- cksfv
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/cksfv
+fi
+
+%triggerin -- clisp
+ln -sf %{_datadir}/bash-completion/clisp %{_sysconfdir}/bash_completion.d
+
+%triggerun -- clisp
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/clisp
+fi
+
+%triggerin -- dsniff > 2.4-0.b2.8mdv2009.1
+ln -sf %{_datadir}/bash-completion/dsniff %{_sysconfdir}/bash_completion.d
+
+%triggerun -- dsniff > 2.4-0.b2.8mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/dsniff
+fi
+
+%triggerin -- freeciv > 2.1.8-1mdv2009.1
+ln -sf %{_datadir}/bash-completion/freeciv %{_sysconfdir}/bash_completion.d
+
+%triggerun -- freeciv > 2.1.8-1mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/freeciv
+fi
+
+%triggerin -- gnupg2
+ln -sf %{_datadir}/bash-completion/gpg2 %{_sysconfdir}/bash_completion.d
+
+%triggerun -- gnupg2
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/gpg2
+fi
+
+%triggerin -- gkrellm > 2.3.2-1mdv2009.1
+ln -sf %{_datadir}/bash-completion/gkrellm %{_sysconfdir}/bash_completion.d
+
+%triggerun -- gkrellm > 2.3.2-1mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/gkrellm
+fi
+
+%triggerin -- heimdal-workstation
+ln -sf %{_datadir}/bash-completion/heimdal %{_sysconfdir}/bash_completion.d
+
+%triggerun -- heimdal-workstation
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/heimdal
+fi
+
+%triggerin -- unixODBC
+ln -sf %{_datadir}/bash-completion/isql %{_sysconfdir}/bash_completion.d
+
+%triggerun -- unixODBC
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/isql
+fi
+
+%triggerin -- lilypond > 2.12.2-1mdv2009.1
+ln -sf %{_datadir}/bash-completion/lilypond %{_sysconfdir}/bash_completion.d
+
+%triggerun -- lilypond > 2.12.2-1mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/lilypond
+fi
+
+%triggerin -- lzop
+ln -sf %{_datadir}/bash-completion/lzop %{_sysconfdir}/bash_completion.d
+
+%triggerun -- lzop
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/lzop
+fi
+
+%triggerin -- mcrypt > 2.6.8-1mdv2009.1
+ln -sf %{_datadir}/bash-completion/mcrypt %{_sysconfdir}/bash_completion.d
+
+%triggerun -- mcrypt > 2.6.8-1mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/mcrypt
+fi
+
+%triggerin -- minicom > 2.3-5mdv2009.1
+ln -sf %{_datadir}/bash-completion/minicom %{_sysconfdir}/bash_completion.d
+
+%triggerun -- minicom > 2.3-5mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/minicom
+fi
+
+%triggerin -- monodevelop
+ln -sf %{_datadir}/bash-completion/monodevelop %{_sysconfdir}/bash_completion.d
+
+%triggerun -- monodevelop
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/monodevelop
+fi
+
+%triggerin -- munin-node > 1.3.4-4mdv2009.1
+ln -sf %{_datadir}/bash-completion/munin-node %{_sysconfdir}/bash_completion.d
+
+%triggerun -- munin-node > 1.3.4-4mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/munin-node
+fi
+
+%triggerin -- mkinitrd > 6.0.63-9mnb2
+ln -sf %{_datadir}/bash-completion/mkinitrd %{_sysconfdir}/bash_completion.d
+
+%triggerun -- mkinitrd > 6.0.63-9mnb2
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/mkinitrd
+fi
+
+%triggerin -- net-tools > 1.60-29mdv2009.1
+ln -sf %{_datadir}/bash-completion/net-tools %{_sysconfdir}/bash_completion.d
+
+%triggerun -- net-tools > 1.60-29mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/net-tools
+fi
+
+%triggerin -- openldap-clients > 2.4.13-4mdv2009.1
+ln -sf %{_datadir}/bash-completion/openldap %{_sysconfdir}/bash_completion.d
+
+%triggerun -- openldap-clients > 2.4.13-4mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/openldap
+fi
+
+%triggerin -- openssh-clients
+ln -sf %{_datadir}/bash-completion/ssh %{_sysconfdir}/bash_completion.d
+
+%triggerun -- openssh-clients
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/ssh
+fi
+
+%triggerin -- openssl > 0.9.8i-4mdv2009.1
+ln -sf %{_datadir}/bash-completion/openssl %{_sysconfdir}/bash_completion.d
+
+%triggerun -- openssl > 0.9.8i-4mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/openssl
+fi
+
+%triggerin -- perl-CPANPLUS > 0.84-3mdv2009.1
+ln -sf %{_datadir}/bash-completion/cpan2dist %{_sysconfdir}/bash_completion.d
+
+%triggerun -- perl-CPANPLUS > 0.84-3mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/cpan2dist
+fi
+
+%triggerin -- qemu > 0.9.1-0.r5137.1mdv2009.0
+ln -sf %{_datadir}/bash-completion/qemu %{_sysconfdir}/bash_completion.d
+
+%triggerun -- qemu > 0.9.1-0.r5137.1mdv2009.0
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/qemu
+fi
+
+%triggerin -- quota > 3.16-4mdv2009.1
+ln -sf %{_datadir}/bash-completion/quota-tools %{_sysconfdir}/bash_completion.d
+
+%triggerun -- quota > 3.16-4mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/quota-tools
+fi
+
+%triggerin -- rdesktop > 1.6.0-6mdv2009.1
+ln -sf %{_datadir}/bash-completion/rdesktop %{_sysconfdir}/bash_completion.d
+
+%triggerun -- rdesktop > 1.6.0-6mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/rdesktop
+fi
+
+%triggerin -- samba-clients > 3.2.7-1mdv2009.1
+ln -sf %{_datadir}/bash-completion/samba %{_sysconfdir}/bash_completion.d
+
+%triggerun -- samba-clients > 3.2.7-1mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/samba
+fi
+
+%triggerin -- sitecopy
+ln -sf %{_datadir}/bash-completion/sitecopy %{_sysconfdir}/bash_completion.d
+
+%triggerun -- sitecopy
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/sitecopy
+fi
+
+%triggerin -- strace > 4.5.18-1mdv2009.1
+ln -sf %{_datadir}/bash-completion/strace %{_sysconfdir}/bash_completion.d
+
+%triggerun -- strace > 4.5.18-1mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/strace
+fi
+
+%triggerin -- tightvnc > 1.3.9-17mdv2009.1
+ln -sf %{_datadir}/bash-completion/vncviewer %{_sysconfdir}/bash_completion.d
+
+%triggerun -- tightvnc > 1.3.9-17mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/vncviewer
+fi
+
+%triggerin -- vpnc > 0.5.3-1mdv2009.1
+ln -sf %{_datadir}/bash-completion/vpnc %{_sysconfdir}/bash_completion.d
+
+%triggerun -- vpnc 0.5.3-1mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/vpnc
+fi
+
+%triggerin -- unace
+ln -sf %{_datadir}/bash-completion/unace %{_sysconfdir}/bash_completion.d
+
+%triggerun -- unace
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/unace
+fi
+
+%triggerin -- unrar > 3.80-1mdv2009.1
+ln -sf %{_datadir}/bash-completion/unrar %{_sysconfdir}/bash_completion.d
+
+%triggerun -- unrar > 3.80-1mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/unrar
+fi
+
+%triggerin -- xz
+ln -sf %{_datadir}/bash-completion/lzma %{_sysconfdir}/bash_completion.d
+
+%triggerun -- xz
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/lzma
+fi
+
+%triggerin -- xen > 3.3.1-1mdv2009.1
+ln -sf %{_datadir}/bash-completion/xm %{_sysconfdir}/bash_completion.d
+
+%triggerun -- xen > 3.3.1-1mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/xm
+fi
 
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc README contrib README.*.urpmi TODO
+%doc README README.*.urpmi TODO
 %{_sysconfdir}/bash_completion
 %{_sysconfdir}/bash_completion.d
 %{_sysconfdir}/profile.d/20bash-completion.sh
+%{_datadir}/bash-completion
 %config(noreplace) %{_sysconfdir}/sysconfig/bash-completion
 %config(noreplace) %{_sysconfdir}/skel/.bash_completion
 
