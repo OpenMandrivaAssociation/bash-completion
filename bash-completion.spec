@@ -1,5 +1,5 @@
 %define name	bash-completion
-%define version 20090203
+%define version 20090204
 %define release %mkrel 1
 
 Name:		%{name}
@@ -166,6 +166,14 @@ if [ $2 = 0 ]; then
     rm -f %{_sysconfdir}/bash_completion.d/clisp
 fi
 
+%triggerin -- cowsay > 3.03-15mdv2009.1
+ln -sf %{_datadir}/bash-completion/cowsay %{_sysconfdir}/bash_completion.d
+
+%triggerun -- cowsay > 3.03-15mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/cowsay
+fi
+
 %triggerin -- dsniff > 2.4-0.b2.8mdv2009.1
 ln -sf %{_datadir}/bash-completion/dsniff %{_sysconfdir}/bash_completion.d
 
@@ -212,6 +220,14 @@ ln -sf %{_datadir}/bash-completion/isql %{_sysconfdir}/bash_completion.d
 %triggerun -- unixODBC
 if [ $2 = 0 ]; then
     rm -f %{_sysconfdir}/bash_completion.d/isql
+fi
+
+%triggerin -- ldapvi > 1.7-6mdv2009.0
+ln -sf %{_datadir}/bash-completion/ldapvi %{_sysconfdir}/bash_completion.d
+
+%triggerun -- ldavpi > 1.7-6mdv2009.0
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/ldapvi
 fi
 
 %triggerin -- lilypond > 2.12.2-1mdv2009.1
@@ -278,6 +294,14 @@ if [ $2 = 0 ]; then
     rm -f %{_sysconfdir}/bash_completion.d/net-tools
 fi
 
+%triggerin -- nfs-utils > 1:1.1.4-2mdv2009.1
+ln -sf %{_datadir}/bash-completion/rpcdebug %{_sysconfdir}/bash_completion.d
+
+%triggerun -- nfs-utils > 1:1.1.4-2mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/rpcdebug
+fi
+
 %triggerin -- openldap-clients > 2.4.13-4mdv2009.1
 ln -sf %{_datadir}/bash-completion/openldap %{_sysconfdir}/bash_completion.d
 
@@ -334,6 +358,14 @@ if [ $2 = 0 ]; then
     rm -f %{_sysconfdir}/bash_completion.d/rdesktop
 fi
 
+%triggerin -- rpmcheck > 0.0.2368-7mdv2009.1
+ln -sf %{_datadir}/bash-completion/rpmcheck %{_sysconfdir}/bash_completion.d
+
+%triggerun -- rpmcheck > 0.0.2368-7mdv2009.1
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/rpmcheck
+fi
+
 %triggerin -- samba-clients > 3.2.7-1mdv2009.1
 ln -sf %{_datadir}/bash-completion/samba %{_sysconfdir}/bash_completion.d
 
@@ -348,6 +380,14 @@ ln -sf %{_datadir}/bash-completion/sitecopy %{_sysconfdir}/bash_completion.d
 %triggerun -- sitecopy
 if [ $2 = 0 ]; then
     rm -f %{_sysconfdir}/bash_completion.d/sitecopy
+fi
+
+%triggerin -- smartmontools > 5.38-3mdv2009.0
+ln -sf %{_datadir}/bash-completion/smartctl %{_sysconfdir}/bash_completion.d
+
+%triggerun -- smartmontools > 5.38-3mdv2009.0
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/smartctl
 fi
 
 %triggerin -- strace > 4.5.18-1mdv2009.1
