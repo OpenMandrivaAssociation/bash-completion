@@ -1,5 +1,5 @@
 %define name	bash-completion
-%define version 20090204
+%define version 20090209
 %define release %mkrel 1
 
 Name:		%{name}
@@ -40,7 +40,6 @@ the programmable completion feature of bash.
 %patch5 -p 1
 %patch8 -p 1
 %patch10
-%patch20 -p 1
 %patch21
 %patch23 -p 1
 %patch28
@@ -292,6 +291,14 @@ ln -sf %{_datadir}/bash-completion/net-tools %{_sysconfdir}/bash_completion.d
 %triggerun -- net-tools > 1.60-29mdv2009.1
 if [ $2 = 0 ]; then
     rm -f %{_sysconfdir}/bash_completion.d/net-tools
+fi
+
+%triggerin -- msynctool > 0.22-7mdv2009.0
+ln -sf %{_datadir}/bash-completion/msynctool %{_sysconfdir}/bash_completion.d
+
+%triggerun -- msynctool > 0.22-7mdv2009.0
+if [ $2 = 0 ]; then
+    rm -f %{_sysconfdir}/bash_completion.d/msynctool
 fi
 
 %triggerin -- nfs-utils > 1:1.1.4-2mdv2009.1
