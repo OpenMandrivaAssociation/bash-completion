@@ -1,5 +1,5 @@
 %define name	bash-completion
-%define version 20090209
+%define version 20090212
 %define release %mkrel 1
 
 Name:		%{name}
@@ -10,19 +10,12 @@ Group:		Shells
 License:	GPL
 URL:		http://www.caliban.org/bash/
 Source0:	http://www.caliban.org/files/bash/%{name}-%{version}.tar.bz2
-# new helper function: completion on devices PCI and USB ids
-Patch1:		bash-completion-20090108-device_ids.patch
 # configuration: allow to disable slow remote scp completion
 Patch5:		bash-completion-20090202-scp-remote.patch
 # configuration: allow to disable slow rpm database completion
 Patch8:		bash-completion-20090202-rpm-database.patch
 # configuration: make ~/.bash_completion sourced by profile scriptlet
 Patch10:	bash-completion-20050121-disable-user-completion.patch
-# better function: set words offset before launching foreign completion
-Patch20:	bash-completion-20090108-better-command-completion.patch
-Patch21:	bash-completion-20060301-cdrkit-completion.patch
-# cosmetic: makes _perl function use standard 'if options else' pattern
-Patch23:	bash-completion-20090108-more-standard-perl-completion.patch
 Patch28:	bash-completion-20060301-better-screen-completion.patch
 Patch30:	bash-completion-20090108-externalise-openssl-completion.patch
 Patch31:	bash-completion-20090108-externalise-mkinitrd-completion.patch
@@ -36,12 +29,9 @@ the programmable completion feature of bash.
 
 %prep
 %setup -q -n bash-completion
-%patch1 -p 1
 %patch5 -p 1
 %patch8 -p 1
 %patch10
-%patch21
-%patch23 -p 1
 %patch28
 %patch30 -p 1
 %patch31 -p 1
