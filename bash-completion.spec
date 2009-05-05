@@ -1,15 +1,17 @@
 %define name	bash-completion
-%define version 20090212
+%define version 1.0
 %define release %mkrel 1
 
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
+Epoch:      1
 Summary:	Programmable completion for bash
 Group:		Shells
 License:	GPL
-URL:		http://www.caliban.org/bash/
-Source0:	http://www.caliban.org/files/bash/%{name}-%{version}.tar.bz2
+URL:		http://bash-completion.alioth.debian.org/
+Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{version}.tar.gz
+Source1:	to_review.tar.bz2
 # configuration: allow to disable slow remote scp completion
 Patch5:		bash-completion-20090202-scp-remote.patch
 # configuration: allow to disable slow rpm database completion
@@ -28,7 +30,8 @@ bash-completion is a collection of shell functions that take advantage of
 the programmable completion feature of bash.
 
 %prep
-%setup -q -n bash-completion
+%setup -q
+%setup -q -a 1 -T -D
 %patch5 -p 1
 %patch8 -p 1
 %patch10
