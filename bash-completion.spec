@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 1.0
-%define release %mkrel 1
+%define release %mkrel 2
 
 Name:		%{name}
 Version:	%{version}
@@ -21,6 +21,7 @@ Patch10:	bash-completion-20050121-disable-user-completion.patch
 Patch28:	bash-completion-20060301-better-screen-completion.patch
 Patch30:	bash-completion-20090108-externalise-openssl-completion.patch
 Patch31:	bash-completion-20090108-externalise-mkinitrd-completion.patch
+Patch32:	bash-completion-bash4.patch
 Requires:	bash >= 2.05
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}
@@ -38,6 +39,7 @@ the programmable completion feature of bash.
 %patch28
 %patch30 -p 1
 %patch31 -p 1
+%patch32 -p1
 
 %install
 rm -rf %{buildroot}
