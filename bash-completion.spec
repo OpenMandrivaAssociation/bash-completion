@@ -1,6 +1,7 @@
 %define name	bash-completion
-%define version 1.0
-%define release %mkrel 2
+%define version 1.1
+%define snapshot 20090910
+%define release %mkrel 0.%{snapshot}.1
 
 Name:		%{name}
 Version:	%{version}
@@ -10,18 +11,13 @@ Summary:	Programmable completion for bash
 Group:		Shells
 License:	GPL
 URL:		http://bash-completion.alioth.debian.org/
-Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{version}.tar.gz
-Source1:	to_review.tar.bz2
+Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{snapshot}.tar.bz2
 # configuration: allow to disable slow remote scp completion
-Patch5:		bash-completion-20090202-scp-remote.patch
+Patch5:		bash-completion-20090910-scp-remote.patch
 # configuration: allow to disable slow rpm database completion
-Patch8:		bash-completion-20090202-rpm-database.patch
+Patch8:		bash-completion-20090910-rpm-database.patch
 # configuration: make ~/.bash_completion sourced by profile scriptlet
-Patch10:	bash-completion-20050121-disable-user-completion.patch
-Patch28:	bash-completion-20060301-better-screen-completion.patch
-Patch30:	bash-completion-20090108-externalise-openssl-completion.patch
-Patch31:	bash-completion-20090108-externalise-mkinitrd-completion.patch
-Patch32:	bash-completion-bash4.patch
+Patch10:	bash-completion-20090910-disable-user-completion.patch
 Requires:	bash >= 2.05
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}
@@ -31,15 +27,10 @@ bash-completion is a collection of shell functions that take advantage of
 the programmable completion feature of bash.
 
 %prep
-%setup -q
-%setup -q -a 1 -T -D
+%setup -q -n %{name}-%{snapshot}
 %patch5 -p 1
 %patch8 -p 1
-%patch10
-%patch28
-%patch30 -p 1
-%patch31 -p 1
-%patch32 -p1
+%patch10 -p 1
 
 %install
 rm -rf %{buildroot}
@@ -48,7 +39,6 @@ install -m 644 bash_completion %{buildroot}%_sysconfdir
 
 install -d -m 755 %{buildroot}%{_datadir}/bash-completion
 install -m 644 contrib/* %{buildroot}%{_datadir}/bash-completion
-install -m 644 to_review/* %{buildroot}%{_datadir}/bash-completion
 
 mkdir -p %{buildroot}%_sysconfdir/profile.d/
 cat <<'EOF' >> %{buildroot}%_sysconfdir/profile.d/20bash-completion.sh
