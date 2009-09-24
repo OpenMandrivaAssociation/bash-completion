@@ -1,7 +1,7 @@
 %define name	bash-completion
 %define version 1.1
-%define snapshot 20090910
-%define release %mkrel 0.%{snapshot}.2
+%define snapshot 20090924
+%define release %mkrel 0.%{snapshot}.1
 
 Name:		%{name}
 Version:	%{version}
@@ -12,7 +12,6 @@ Group:		Shells
 License:	GPL
 URL:		http://bash-completion.alioth.debian.org/
 Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{snapshot}.tar.bz2
-Source1:	install-completions
 # configuration: allow to disable slow remote scp completion
 Patch5:		bash-completion-20090910-scp-remote.patch
 # configuration: allow to disable slow rpm database completion
@@ -113,7 +112,7 @@ to edit their completion settings.
 EOF
 
 install -d -m 755 %{buildroot}%{_bindir}
-install -m 755 %{SOURCE1} %{buildroot}%{_bindir}/install-completions
+install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 
 %post
 %{_bindir}/install-completions -i \
