@@ -1,7 +1,17 @@
 %define name	bash-completion
 %define version 1.1
 %define snapshot 20090924
-%define release %mkrel 0.%{snapshot}.1
+%define release %mkrel 1
+
+# Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
+%define bashcomp_trigger() \
+%triggerin -- %1\
+if [ ! -L %{_sysconfdir}/bash_completion.d/%{?2}%{!?2:%1} ] ; then\
+    ln -sf ../..%{_datadir}/%{name}/%{?2}%{!?2:%1} %{_sysconfdir}/bash_completion.d\
+fi\
+%triggerun -- %1\
+[ $2 -gt 0 ] || rm -f %{_sysconfdir}/bash_completion.d/%{?2}%{!?2:%1}\
+%{nil}
 
 Name:		%{name}
 Version:	%{version}
@@ -114,13 +124,131 @@ EOF
 install -d -m 755 %{buildroot}%{_bindir}
 install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 
-%post
-%{_bindir}/install-completions -i \
-    %{_datadir}/bash-completion \
-    %{_sysconfdir}/bash_completion.d
-
-%postun
-symlinks -d %{_sysconfdir}/bash_completion.d >/dev/null 2>&1
+%bashcomp_trigger ant
+%bashcomp_trigger apt
+%bashcomp_trigger aptitude
+%bashcomp_trigger aspell
+%bashcomp_trigger autorpm
+%bashcomp_trigger bash bash-builtins
+%bashcomp_trigger bind-utils
+%bashcomp_trigger bitkeeper
+%bashcomp_trigger BitTorrent bittorrent
+%bashcomp_trigger bluez bluez-utils
+%bashcomp_trigger bridge-utils brctl
+%bashcomp_trigger bzip2
+%bashcomp_trigger cdrkit wodim
+%bashcomp_trigger cdrkit-genisoimage genisoimage
+%bashcomp_trigger chkconfig
+%bashcomp_trigger cksfv
+%bashcomp_trigger clisp
+%bashcomp_trigger coreutils dd
+%bashcomp_trigger cpio
+%bashcomp_trigger cups-clients cups
+%bashcomp_trigger cvsnt,cvs cvs
+%bashcomp_trigger dhcp-client dhclient
+%bashcomp_trigger dict
+%bashcomp_trigger dpkg
+%bashcomp_trigger dsniff
+%bashcomp_trigger expat xmlwf
+%bashcomp_trigger findutils
+%bashcomp_trigger freeciv-client,freeciv-server freeciv
+%bashcomp_trigger gcc-ada gnatmake
+%bashcomp_trigger gcc,gcc-java,fortran,gcc-c++ gcc
+%bashcomp_trigger gcl
+%bashcomp_trigger gdb
+%bashcomp_trigger gkrellm
+%bashcomp_trigger glibc iconv
+%bashcomp_trigger glibc-misc getent
+%bashcomp_trigger gnupg2 gpg2
+%bashcomp_trigger gnupg gpg
+%bashcomp_trigger gzip
+%bashcomp_trigger heimdal
+%bashcomp_trigger ImageMagick imagemagick
+%bashcomp_trigger info,pinfo info
+%bashcomp_trigger ipmitool
+%bashcomp_trigger iptables
+%bashcomp_trigger jar
+%bashcomp_trigger java-sun-jre,java-gcj-compat java
+%bashcomp_trigger kdelibs dcop
+%bashcomp_trigger ldapvi
+%bashcomp_trigger lftp
+%bashcomp_trigger libxml2-progs xmllint
+%bashcomp_trigger lilo
+%bashcomp_trigger lilypond
+%bashcomp_trigger links
+%bashcomp_trigger lvm2 lvm
+%bashcomp_trigger lzma,xz lzma
+%bashcomp_trigger lzop
+%bashcomp_trigger mailman
+%bashcomp_trigger make
+%bashcomp_trigger man
+%bashcomp_trigger mc
+%bashcomp_trigger mcrypt
+%bashcomp_trigger mdadm
+%bashcomp_trigger minicom
+%bashcomp_trigger mplayer
+%bashcomp_trigger mtx
+%bashcomp_trigger multisync-msynctool,msynctool msynctool
+%bashcomp_trigger munin
+%bashcomp_trigger munin-node
+%bashcomp_trigger mutt
+%bashcomp_trigger mysql-client mysqladmin
+%bashcomp_trigger ncftp
+%bashcomp_trigger net-tools
+%bashcomp_trigger nfs-utils rpcdebug
+%bashcomp_trigger ntp-client ntpdate
+%bashcomp_trigger openldap
+%bashcomp_trigger openssh-clients ssh
+%bashcomp_trigger openssl-tools openssl
+%bashcomp_trigger pcmciautils cardctl
+%bashcomp_trigger perl-base perl
+%bashcomp_trigger pine
+%bashcomp_trigger pkgconfig pkg-config
+%bashcomp_trigger poldek
+%bashcomp_trigger postfix
+%bashcomp_trigger postgresql-clients postgresql
+%bashcomp_trigger povray
+%bashcomp_trigger procps sysctl
+%bashcomp_trigger pwdutils shadow
+%bashcomp_trigger util-linux-ng chsh
+%bashcomp_trigger python
+%bashcomp_trigger qemu
+%bashcomp_trigger qt4-qtdbus qdbus
+%bashcomp_trigger quota-tools
+%bashcomp_trigger rcs
+%bashcomp_trigger rdesktop
+%bashcomp_trigger resolvconf
+%bashcomp_trigger rpm
+%bashcomp_trigger rrdtool
+%bashcomp_trigger rsync
+%bashcomp_trigger ruby-modules ri
+%bashcomp_trigger samba-client samba
+%bashcomp_trigger sbcl
+%bashcomp_trigger screen
+%bashcomp_trigger sitecopy
+%bashcomp_trigger smartmontools smartctl
+%bashcomp_trigger snownews
+%bashcomp_trigger strace
+%bashcomp_trigger svk
+%bashcomp_trigger tar
+%bashcomp_trigger tcpdump
+%bashcomp_trigger tightvnc vncviewer
+%bashcomp_trigger unace
+%bashcomp_trigger unixODBC isql
+%bashcomp_trigger unrar
+%bashcomp_trigger update-alternatives
+%bashcomp_trigger vpnc
+%bashcomp_trigger wireless-tools
+%bashcomp_trigger wvdial
+%bashcomp_trigger xhost
+%bashcomp_trigger xrandr
+%bashcomp_trigger xen xm
+%bashcomp_trigger libxml2-utils xmllint
+%bashcomp_trigger xmms
+%bashcomp_trigger xz
+%bashcomp_trigger yp-tools
+%bashcomp_trigger yum
+%bashcomp_trigger yum-arch
 
 %clean
 rm -rf %{buildroot}
