@@ -189,7 +189,6 @@ install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 %bashcomp_trigger mplayer
 %bashcomp_trigger mtx
 %bashcomp_trigger multisync-msynctool,msynctool msynctool
-%bashcomp_trigger munin
 %bashcomp_trigger munin-node
 %bashcomp_trigger mutt
 %bashcomp_trigger mysql-client mysqladmin
