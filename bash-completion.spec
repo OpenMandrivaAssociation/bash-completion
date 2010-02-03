@@ -1,7 +1,7 @@
 %define name	bash-completion
-%define version 1.1
-%define snapshot 20090924
-%define release %mkrel 1
+%define version 2.0
+%define snapshot 20100203
+%define release %mkrel 0.%{snapshot}.1
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -23,13 +23,11 @@ License:	GPL
 URL:		http://bash-completion.alioth.debian.org/
 Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{snapshot}.tar.bz2
 # configuration: allow to disable slow remote scp completion
-Patch5:		bash-completion-20090910-scp-remote.patch
+Patch5:		bash-completion-20100203-scp-remote.patch
 # configuration: allow to disable slow rpm database completion
-Patch8:		bash-completion-20090910-rpm-database.patch
+Patch8:		bash-completion-20100203-rpm-database.patch
 # configuration: make ~/.bash_completion sourced by profile scriptlet
-Patch10:	bash-completion-20090910-disable-user-completion.patch
-Requires:	bash >= 2.05
-Requires(postun):	symlinks
+Patch10:	bash-completion-20100203-disable-user-completion.patch
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}
 
