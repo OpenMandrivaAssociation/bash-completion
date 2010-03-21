@@ -1,7 +1,7 @@
 %define name	bash-completion
 %define version 2.0
 %define snapshot 20100203
-%define release %mkrel 0.%{snapshot}.1
+%define release %mkrel 0.%{snapshot}.2
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -184,6 +184,7 @@ install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 %bashcomp_trigger mcrypt
 %bashcomp_trigger mdadm
 %bashcomp_trigger minicom
+%bashcomp_trigger mkinitrd
 %bashcomp_trigger mplayer
 %bashcomp_trigger mtx
 %bashcomp_trigger multisync-msynctool,msynctool msynctool
