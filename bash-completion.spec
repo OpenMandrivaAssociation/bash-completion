@@ -142,6 +142,7 @@ install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 %bashcomp_trigger coreutils dd
 %bashcomp_trigger cpio
 %bashcomp_trigger cups-clients cups
+%bashcomp_trigger cryptsetup
 %bashcomp_trigger cvsnt,cvs cvs
 %bashcomp_trigger dhcp-client dhclient
 %bashcomp_trigger dict
