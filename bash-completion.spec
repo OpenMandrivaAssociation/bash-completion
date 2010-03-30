@@ -1,7 +1,7 @@
 %define name	bash-completion
 %define version 2.0
-%define snapshot 20100321
-%define release %mkrel 0.%{snapshot}.2
+%define snapshot 20100331
+%define release %mkrel 0.%{snapshot}.1
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -157,12 +157,12 @@ install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 %bashcomp_trigger gdb
 %bashcomp_trigger gkrellm
 %bashcomp_trigger glibc iconv
-%bashcomp_trigger glibc-misc getent
+%bashcomp_trigger glibc getent
 %bashcomp_trigger gnupg2 gpg2
 %bashcomp_trigger gnupg gpg
 %bashcomp_trigger gzip
-%bashcomp_trigger heimdal
-%bashcomp_trigger ImageMagick imagemagick
+%bashcomp_trigger heimdal-workstation heimdal
+%bashcomp_trigger imagemagick
 %bashcomp_trigger info,pinfo info
 %bashcomp_trigger ipmitool
 %bashcomp_trigger iptables
