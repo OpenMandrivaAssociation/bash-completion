@@ -217,6 +217,7 @@ install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 %bashcomp_trigger rcs
 %bashcomp_trigger rdesktop
 %bashcomp_trigger resolvconf
+%bashcomp_trigger rfkill
 %bashcomp_trigger rpm
 %bashcomp_trigger rrdtool
 %bashcomp_trigger rsync
