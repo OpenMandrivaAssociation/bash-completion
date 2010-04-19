@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 2.0
-%define snapshot 20100412
+%define snapshot 20100419
 %define release %mkrel 0.%{snapshot}.1
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
@@ -162,6 +162,7 @@ install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 %bashcomp_trigger gnupg gpg
 %bashcomp_trigger gzip
 %bashcomp_trigger heimdal-workstation heimdal
+%bashcomp_trigger hping2
 %bashcomp_trigger imagemagick
 %bashcomp_trigger info,pinfo info
 %bashcomp_trigger ipmitool
@@ -184,6 +185,7 @@ install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 %bashcomp_trigger mc
 %bashcomp_trigger mcrypt
 %bashcomp_trigger mdadm
+%bashcomp_trigger medusa
 %bashcomp_trigger minicom
 %bashcomp_trigger mkinitrd
 %bashcomp_trigger mplayer
@@ -195,6 +197,7 @@ install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 %bashcomp_trigger ncftp
 %bashcomp_trigger net-tools
 %bashcomp_trigger nfs-utils rpcdebug
+%bashcomp_trigger nmap
 %bashcomp_trigger ntp-client ntpdate
 %bashcomp_trigger openldap
 %bashcomp_trigger openssh-clients ssh
