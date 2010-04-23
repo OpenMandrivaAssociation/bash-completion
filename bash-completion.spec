@@ -131,7 +131,7 @@ install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 %bashcomp_trigger bind-utils
 %bashcomp_trigger bitkeeper
 %bashcomp_trigger BitTorrent bittorrent
-%bashcomp_trigger bluez bluez-utils
+%bashcomp_trigger bluez-utils bluez
 %bashcomp_trigger bridge-utils brctl
 %bashcomp_trigger bzip2
 %bashcomp_trigger cdrkit wodim
