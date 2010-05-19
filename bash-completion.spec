@@ -1,7 +1,7 @@
 %define name	bash-completion
 %define version 2.0
 %define snapshot 20100419
-%define release %mkrel 0.%{snapshot}.1
+%define release %mkrel 0.%{snapshot}.2
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -22,6 +22,8 @@ Group:		Shells
 License:	GPL
 URL:		http://bash-completion.alioth.debian.org/
 Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{snapshot}.tar.bz2
+# configuration: allow to disable slow avahi-browse completion
+Patch4:		bash-completion-20100419-avahi-browse.patch
 # configuration: allow to disable slow remote scp completion
 Patch5:		bash-completion-20100203-scp-remote.patch
 # configuration: allow to disable slow rpm database completion
@@ -85,6 +87,8 @@ COMP_TAR_INTERNAL_PATHS=
 COMP_IWLIST_SCAN=
 # enable installed packages completion
 COMP_RPM_DATABASE=
+# enable zeroconf hostnames completion
+COMP_AVAHI_BROWSE=
 EOF
 
 mkdir -p %{buildroot}%_sysconfdir/skel
@@ -105,6 +109,8 @@ cat <<'EOF' >> %{buildroot}%_sysconfdir/skel/.bash_completion
 #COMP_IWCONFIG_SCAN=
 # enable installed packages completion
 #COMP_RPM_DATABASE=
+# enable zeroconf hostnames completion
+#COMP_AVAHI_BROWSE=
 EOF
 
 cat > README.install.urpmi <<EOF
