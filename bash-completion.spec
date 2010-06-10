@@ -1,7 +1,7 @@
 %define name	bash-completion
 %define version 2.0
 %define snapshot 20100419
-%define release %mkrel 0.%{snapshot}.2
+%define release %mkrel 0.%{snapshot}.3
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -39,6 +39,7 @@ the programmable completion feature of bash.
 
 %prep
 %setup -q -n %{name}-%{snapshot}
+%patch4 -p 1
 %patch5 -p 1
 %patch8 -p 1
 %patch10 -p 1
