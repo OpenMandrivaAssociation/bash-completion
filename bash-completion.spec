@@ -1,7 +1,7 @@
 %define name	bash-completion
 %define version 2.0
-%define snapshot 20100419
-%define release %mkrel 0.%{snapshot}.3
+%define snapshot 20100809
+%define release %mkrel 0.%{snapshot}.1
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -43,14 +43,20 @@ the programmable completion feature of bash.
 %patch5 -p 1
 %patch8 -p 1
 %patch10 -p 1
+autoreconf -i
+
+%build
+%configure2_5x
+%make
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}%_sysconfdir/bash_completion.d
-install -m 644 bash_completion %{buildroot}%_sysconfdir
+%makeinstall_std
 
-install -d -m 755 %{buildroot}%{_datadir}/bash-completion
-install -m 644 contrib/* %{buildroot}%{_datadir}/bash-completion
+# adapt installation
+rm -f %{buildroot}%_sysconfdir/profile.d/bash_completion.sh
+mv %{buildroot}%_sysconfdir/bash_completion.d/* \
+    %{buildroot}%{_datadir}/bash-completion
 
 mkdir -p %{buildroot}%_sysconfdir/profile.d/
 cat <<'EOF' >> %{buildroot}%_sysconfdir/profile.d/20bash-completion.sh
