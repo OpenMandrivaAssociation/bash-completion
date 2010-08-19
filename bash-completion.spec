@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 2.0
-%define snapshot 20100809
+%define snapshot 20100819
 %define release %mkrel 0.%{snapshot}.1
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
@@ -169,8 +169,7 @@ install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 %bashcomp_trigger gcl
 %bashcomp_trigger gdb
 %bashcomp_trigger gkrellm
-%bashcomp_trigger glibc iconv
-%bashcomp_trigger glibc getent
+%bashcomp_trigger glibc glibc
 %bashcomp_trigger gnupg2 gpg2
 %bashcomp_trigger gnupg gpg
 %bashcomp_trigger gzip
