@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 2.0
-%define snapshot 20100819
+%define snapshot 20100822
 %define release %mkrel 0.%{snapshot}.1
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
@@ -135,6 +135,20 @@ EOF
 install -d -m 755 %{buildroot}%{_bindir}
 install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 
+# Combine to per-package files to work around #60699
+pushd %{buildroot}%{_datadir}/bash-completion
+( echo ; cat update-alternatives ) >> chkconfig
+rm update-alternatives
+( echo ; cat sysctl ) >> procps
+rm sysctl
+( echo ; cat chsh ; echo ; cat mount ; echo ; cat rtcwake ) >> util-linux
+rm chsh mount rtcwake
+( echo ; cat xrandr ) >> xhost
+mv xhost xorg-x11-server-utils ; rm xrandr
+( echo ; cat iconv ) >> getent
+mv getent glibc; rm iconv
+popd
+
 %bashcomp_trigger ant
 %bashcomp_trigger apt
 %bashcomp_trigger aptitude
@@ -222,7 +236,7 @@ install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 %bashcomp_trigger postfix
 %bashcomp_trigger postgresql-clients postgresql
 %bashcomp_trigger povray
-%bashcomp_trigger procps sysctl
+%bashcomp_trigger procps procps
 %bashcomp_trigger pwdutils shadow
 %bashcomp_trigger util-linux-ng chsh
 %bashcomp_trigger python
