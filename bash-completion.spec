@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 2.0
-%define snapshot 20100822
+%define snapshot 20100912
 %define release %mkrel 0.%{snapshot}.1
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
@@ -55,8 +55,14 @@ rm -rf %{buildroot}
 
 # adapt installation
 rm -f %{buildroot}%_sysconfdir/profile.d/bash_completion.sh
+
+install -d -m 755 %{buildroot}%{_datadir}/bash-completion
 mv %{buildroot}%_sysconfdir/bash_completion.d/* \
     %{buildroot}%{_datadir}/bash-completion
+
+pushd %{buildroot}%_sysconfdir/bash_completion.d
+ln -s ../..%{_datadir}/bash-completion/helpers .
+popd
 
 mkdir -p %{buildroot}%_sysconfdir/profile.d/
 cat <<'EOF' >> %{buildroot}%_sysconfdir/profile.d/20bash-completion.sh
@@ -137,16 +143,12 @@ install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 
 # Combine to per-package files to work around #60699
 pushd %{buildroot}%{_datadir}/bash-completion
-( echo ; cat update-alternatives ) >> chkconfig
-rm update-alternatives
-( echo ; cat sysctl ) >> procps
-rm sysctl
-( echo ; cat chsh ; echo ; cat mount ; echo ; cat rtcwake ) >> util-linux
+( echo ; cat procps ) >> sysctl
+rm procps
+( echo ; cat chsh ; echo ; cat mount ; echo ; cat rtcwake ) >> util-linux-ng
 rm chsh mount rtcwake
-( echo ; cat xrandr ) >> xhost
-mv xhost xorg-x11-server-utils ; rm xrandr
-( echo ; cat iconv ) >> getent
-mv getent glibc; rm iconv
+( echo ; cat iconv; echo ; cat getent ) >> glibc
+rm iconv getent
 popd
 
 %bashcomp_trigger ant
@@ -158,7 +160,7 @@ popd
 %bashcomp_trigger bind-utils
 %bashcomp_trigger bitkeeper
 %bashcomp_trigger BitTorrent bittorrent
-%bashcomp_trigger bluez-utils bluez
+%bashcomp_trigger bluez
 %bashcomp_trigger bridge-utils brctl
 %bashcomp_trigger bzip2
 %bashcomp_trigger cdrkit wodim
@@ -183,7 +185,7 @@ popd
 %bashcomp_trigger gcl
 %bashcomp_trigger gdb
 %bashcomp_trigger gkrellm
-%bashcomp_trigger glibc glibc
+%bashcomp_trigger glibc
 %bashcomp_trigger gnupg2 gpg2
 %bashcomp_trigger gnupg gpg
 %bashcomp_trigger gzip
@@ -238,7 +240,7 @@ popd
 %bashcomp_trigger povray
 %bashcomp_trigger procps procps
 %bashcomp_trigger pwdutils shadow
-%bashcomp_trigger util-linux-ng chsh
+%bashcomp_trigger util-linux-ng
 %bashcomp_trigger python
 %bashcomp_trigger qemu
 %bashcomp_trigger qt4-qtdbus qdbus
@@ -274,6 +276,8 @@ popd
 %bashcomp_trigger xen xm
 %bashcomp_trigger libxml2-utils xmllint
 %bashcomp_trigger xmms
+%bashcomp_trigger xrandr
+%bashcomp_trigger xhost
 %bashcomp_trigger xz
 %bashcomp_trigger yp-tools
 %bashcomp_trigger yum
