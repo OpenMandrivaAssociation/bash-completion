@@ -1,7 +1,7 @@
 %define name	bash-completion
 %define version 2.0
 %define snapshot 20100912
-%define release %mkrel 0.%{snapshot}.1
+%define release %mkrel 0.%{snapshot}.2
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -192,6 +192,7 @@ popd
 %bashcomp_trigger heimdal-workstation heimdal
 %bashcomp_trigger hping2
 %bashcomp_trigger imagemagick
+%bashcomp_trigger initscripts service
 %bashcomp_trigger info,pinfo info
 %bashcomp_trigger ipmitool
 %bashcomp_trigger iptables
