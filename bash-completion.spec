@@ -1,7 +1,7 @@
 %define name	bash-completion
 %define version 2.0
-%define snapshot 20100912
-%define release %mkrel 0.%{snapshot}.2
+%define snapshot 20101106
+%define release %mkrel 0.%{snapshot}.1
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -22,10 +22,8 @@ Group:		Shells
 License:	GPL
 URL:		http://bash-completion.alioth.debian.org/
 Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{snapshot}.tar.bz2
-# configuration: allow to disable slow avahi-browse completion
-Patch4:		bash-completion-20100419-avahi-browse.patch
 # configuration: allow to disable slow remote scp completion
-Patch5:		bash-completion-20100203-scp-remote.patch
+Patch5:		bash-completion-20101106-scp-remote.patch
 # configuration: allow to disable slow rpm database completion
 Patch8:		bash-completion-20100203-rpm-database.patch
 # configuration: make ~/.bash_completion sourced by profile scriptlet
@@ -39,7 +37,6 @@ the programmable completion feature of bash.
 
 %prep
 %setup -q -n %{name}-%{snapshot}
-%patch4 -p 1
 %patch5 -p 1
 %patch8 -p 1
 %patch10 -p 1
@@ -101,7 +98,7 @@ COMP_IWLIST_SCAN=
 # enable installed packages completion
 COMP_RPM_DATABASE=
 # enable zeroconf hostnames completion
-COMP_AVAHI_BROWSE=
+COMP_KNOWN_HOSTS_WITH_AVAHI=
 EOF
 
 mkdir -p %{buildroot}%_sysconfdir/skel
@@ -217,6 +214,7 @@ popd
 %bashcomp_trigger medusa
 %bashcomp_trigger minicom
 %bashcomp_trigger mkinitrd
+%bashcomp_trigger module-init-tools
 %bashcomp_trigger mplayer
 %bashcomp_trigger mtx
 %bashcomp_trigger multisync-msynctool,msynctool msynctool
