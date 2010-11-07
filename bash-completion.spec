@@ -99,6 +99,8 @@ COMP_IWLIST_SCAN=
 COMP_RPM_DATABASE=
 # enable zeroconf hostnames completion
 COMP_KNOWN_HOSTS_WITH_AVAHI=
+# enable hostfile hostnames completion
+COMP_KNOWN_HOSTS_WITH_HOSTFILE=1
 EOF
 
 mkdir -p %{buildroot}%_sysconfdir/skel
