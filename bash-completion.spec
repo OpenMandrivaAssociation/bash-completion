@@ -1,7 +1,7 @@
 %define name	bash-completion
 %define version 2.0
 %define snapshot 20101206
-%define release %mkrel 0.%{snapshot}.1
+%define release %mkrel 0.%{snapshot}.2
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -204,6 +204,7 @@ popd
 %bashcomp_trigger lilo
 %bashcomp_trigger lilypond
 %bashcomp_trigger links
+%bashcomp_trigger lsof
 %bashcomp_trigger lvm2 lvm
 %bashcomp_trigger lzma,xz lzma
 %bashcomp_trigger lzop
