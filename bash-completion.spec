@@ -1,7 +1,7 @@
 %define name	bash-completion
 %define version 2.0
-%define snapshot 20101206
-%define release %mkrel 0.%{snapshot}.2
+%define snapshot 20101219
+%define release %mkrel 0.%{snapshot}.1
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
