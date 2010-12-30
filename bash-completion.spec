@@ -231,7 +231,7 @@ popd
 %bashcomp_trigger ntp-client ntpdate
 %bashcomp_trigger openldap
 %bashcomp_trigger openssh-clients ssh
-%bashcomp_trigger openssl-tools openssl
+%bashcomp_trigger openssl
 %bashcomp_trigger pcmciautils cardctl
 %bashcomp_trigger perl-base perl
 %bashcomp_trigger pine
