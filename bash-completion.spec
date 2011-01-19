@@ -1,7 +1,6 @@
 %define name	bash-completion
-%define version 2.0
-%define snapshot 20101219
-%define release %mkrel 0.%{snapshot}.1
+%define version 1.2
+%define release %mkrel 1
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -16,14 +15,14 @@ fi\
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
-Epoch:      1
+Epoch:      2
 Summary:	Programmable completion for bash
 Group:		Shells
 License:	GPL
 URL:		http://bash-completion.alioth.debian.org/
-Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{snapshot}.tar.bz2
+Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{version}.tar.bz2
 # configuration: allow to disable slow remote scp completion
-Patch5:		bash-completion-20101106-scp-remote.patch
+Patch5:		bash-completion-1.2-scp-remote.patch
 # configuration: allow to disable slow rpm database completion
 Patch8:		bash-completion-20100203-rpm-database.patch
 # configuration: make ~/.bash_completion sourced by profile scriptlet
@@ -36,11 +35,12 @@ bash-completion is a collection of shell functions that take advantage of
 the programmable completion feature of bash.
 
 %prep
-%setup -q -n %{name}-%{snapshot}
+%setup -q -n %{name}-%{version}
 %patch5 -p 1
-%patch8 -p 1
+cd contrib
+%patch8 -p 2
+cd ..
 %patch10 -p 1
-autoreconf -i
 
 %build
 %configure2_5x
@@ -136,9 +136,6 @@ configuration file automatically, while existing users can copy
 /etc/skel/.bash_completion into their home directories if they want
 to edit their completion settings.
 EOF
-
-install -d -m 755 %{buildroot}%{_bindir}
-install -m 755 install-completions %{buildroot}%{_bindir}/install-completions
 
 # Combine to per-package files to work around #60699
 pushd %{buildroot}%{_datadir}/bash-completion
@@ -291,7 +288,6 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc README README.*.urpmi TODO
-%{_bindir}/install-completions
 %{_sysconfdir}/bash_completion
 %{_sysconfdir}/bash_completion.d
 %{_sysconfdir}/profile.d/20bash-completion.sh
