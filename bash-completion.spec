@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 1.2
-%define release %mkrel 2
+%define release %mkrel 3
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -56,10 +56,6 @@ rm -f %{buildroot}%_sysconfdir/profile.d/bash_completion.sh
 install -d -m 755 %{buildroot}%{_datadir}/bash-completion
 mv %{buildroot}%_sysconfdir/bash_completion.d/* \
     %{buildroot}%{_datadir}/bash-completion
-
-pushd %{buildroot}%_sysconfdir/bash_completion.d
-ln -s ../..%{_datadir}/bash-completion/helpers .
-popd
 
 mkdir -p %{buildroot}%_sysconfdir/profile.d/
 cat <<'EOF' >> %{buildroot}%_sysconfdir/profile.d/20bash-completion.sh
@@ -201,7 +197,6 @@ popd
 %bashcomp_trigger lilo
 %bashcomp_trigger lilypond
 %bashcomp_trigger links
-%bashcomp_trigger lsof
 %bashcomp_trigger lvm2 lvm
 %bashcomp_trigger lzma,xz lzma
 %bashcomp_trigger lzop
@@ -237,7 +232,7 @@ popd
 %bashcomp_trigger postfix
 %bashcomp_trigger postgresql-clients postgresql
 %bashcomp_trigger povray
-%bashcomp_trigger procps procps
+%bashcomp_trigger procps sysctl
 %bashcomp_trigger pwdutils shadow
 %bashcomp_trigger util-linux-ng
 %bashcomp_trigger python
