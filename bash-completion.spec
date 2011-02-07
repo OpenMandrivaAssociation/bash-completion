@@ -1,6 +1,6 @@
 %define name	bash-completion
-%define version 1.2
-%define release %mkrel 4
+%define version 1.3
+%define release %mkrel 1
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -21,10 +21,8 @@ Group:		Shells
 License:	GPL
 URL:		http://bash-completion.alioth.debian.org/
 Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{version}.tar.bz2
-# upstream patch: fix individual services completion declaration
-Patch0:     bash-completion-1.2-fix-service-completion.patch
 # configuration: allow to disable slow remote scp completion
-Patch5:		bash-completion-1.2-scp-remote.patch
+Patch5:		bash-completion-1.3-scp-remote.patch
 # configuration: allow to disable slow rpm database completion
 Patch8:		bash-completion-20100203-rpm-database.patch
 # configuration: make ~/.bash_completion sourced by profile scriptlet
@@ -38,11 +36,8 @@ the programmable completion feature of bash.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p 1
 %patch5 -p 1
-cd contrib
-%patch8 -p 2
-cd ..
+%patch8 -p 1
 %patch10 -p 1
 
 %build
