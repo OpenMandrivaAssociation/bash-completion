@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 1.3
-%define release %mkrel 1
+%define release %mkrel 2
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
