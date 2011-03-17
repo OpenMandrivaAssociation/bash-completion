@@ -49,36 +49,34 @@ rm -rf %{buildroot}
 %makeinstall_std
 
 # adapt installation
-rm -f %{buildroot}%_sysconfdir/profile.d/bash_completion.sh
-
 install -d -m 755 %{buildroot}%{_datadir}/bash-completion
-mv %{buildroot}%_sysconfdir/bash_completion.d/* \
+mv %{buildroot}%{_sysconfdir}/bash_completion.d/* \
     %{buildroot}%{_datadir}/bash-completion
 
-pushd %{buildroot}%_sysconfdir/bash_completion.d
+pushd %{buildroot}%{_sysconfdir}/bash_completion.d
 ln -s ../..%{_datadir}/bash-completion/helpers .
 popd
 
-mkdir -p %{buildroot}%_sysconfdir/profile.d/
-cat <<'EOF' >> %{buildroot}%_sysconfdir/profile.d/20bash-completion.sh
+rm -f %{buildroot}%{_sysconfdir}/profile.d/bash_completion.sh
+cat <<'EOF' >> %{buildroot}%{_sysconfdir}/profile.d/20bash-completion.sh
 #!/bin/sh
 # system-wide activation
 if [ "$PS1" ]  && [ -n "$BASH" ]; then
     # source system wide config file
-	. %_sysconfdir/sysconfig/bash-completion
+	. %{_sysconfdir}/sysconfig/bash-completion
     # source user config file if available,
     if [ -f $HOME/.bash_completion ]; then
         . $HOME/.bash_completion
     fi
 
     if [ -n "$ENABLE_BASH_COMPLETION" ]; then
-        . %_sysconfdir/bash_completion
+        . %{_sysconfdir}/bash_completion
     fi
 fi
 EOF
 
-mkdir -p %{buildroot}%_sysconfdir/sysconfig
-cat <<'EOF' >> %{buildroot}%_sysconfdir/sysconfig/bash-completion
+mkdir -p %{buildroot}%{_sysconfdir}/sysconfig
+cat <<'EOF' >> %{buildroot}%{_sysconfdir}/sysconfig/bash-completion
 # bash completion global configuration
 
 # enable bash completion
@@ -101,8 +99,8 @@ COMP_KNOWN_HOSTS_WITH_AVAHI=
 COMP_KNOWN_HOSTS_WITH_HOSTFILE=1
 EOF
 
-mkdir -p %{buildroot}%_sysconfdir/skel
-cat <<'EOF' >> %{buildroot}%_sysconfdir/skel/.bash_completion
+mkdir -p %{buildroot}%{_sysconfdir}/skel
+cat <<'EOF' >> %{buildroot}%{_sysconfdir}/skel/.bash_completion
 # bash completion local configuration
 
 # enable bash completion
