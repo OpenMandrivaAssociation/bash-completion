@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 1.3
-%define release %mkrel 2
+%define release %mkrel 3
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -27,6 +27,8 @@ Patch5:		bash-completion-1.3-scp-remote.patch
 Patch8:		bash-completion-20100203-rpm-database.patch
 # configuration: make ~/.bash_completion sourced by profile scriptlet
 Patch10:	bash-completion-20100203-disable-user-completion.patch
+#(proyvind): fix path to perl helper (hardcoded for now.. :|)
+Patch11:	bash.completion-1.3-perl-helper-path.patch
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}
 
@@ -39,6 +41,7 @@ the programmable completion feature of bash.
 %patch5 -p 1
 %patch8 -p 1
 %patch10 -p 1
+%patch11 -p1
 
 %build
 %configure2_5x
