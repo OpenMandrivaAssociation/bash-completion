@@ -1,6 +1,6 @@
 %define name	bash-completion
 %define version 1.3
-%define release %mkrel 4
+%define release %mkrel 5
 
 # Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
 %define bashcomp_trigger() \
@@ -9,7 +9,7 @@ if [ ! -L %{_sysconfdir}/bash_completion.d/%{?2}%{!?2:%1} ] ; then\
     ln -sf ../..%{_datadir}/%{name}/%{?2}%{!?2:%1} %{_sysconfdir}/bash_completion.d\
 fi\
 %triggerun -- %1\
-[ $2 -gt 0 ] || rm -f %{_sysconfdir}/bash_completion.d/%{?2}%{!?2:%1}\
+[ $2 -gt 0 -a $1 -gt 0 ] || rm -f %{_sysconfdir}/bash_completion.d/%{?2}%{!?2:%1}\
 %{nil}
 
 Name:		%{name}
