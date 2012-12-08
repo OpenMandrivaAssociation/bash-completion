@@ -1,43 +1,27 @@
-%define name	bash-completion
-%define version 1.3
-%define release %mkrel 5
+%define name    bash-completion
+%define version 1.99
+%define release %mkrel 1
 
-# Usage: bashcomp_trigger PACKAGENAME [SCRIPTNAME]
-%define bashcomp_trigger() \
-%triggerin -- %1\
-if [ ! -L %{_sysconfdir}/bash_completion.d/%{?2}%{!?2:%1} ] ; then\
-    ln -sf ../..%{_datadir}/%{name}/%{?2}%{!?2:%1} %{_sysconfdir}/bash_completion.d\
-fi\
-%triggerun -- %1\
-[ $2 -gt 0 -a $1 -gt 0 ] || rm -f %{_sysconfdir}/bash_completion.d/%{?2}%{!?2:%1}\
-%{nil}
-
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Name:       %{name}
+Version:    %{version}
+Release:    %{release}
 Epoch:      2
-Summary:	Programmable completion for bash
-Group:		Shells
-License:	GPL
-URL:		http://bash-completion.alioth.debian.org/
-Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{version}.tar.bz2
-# configuration: allow to disable slow remote scp completion
-Patch5:		bash-completion-1.3-scp-remote.patch
-# configuration: allow to disable slow rpm database completion
-Patch8:		bash-completion-20100203-rpm-database.patch
-# configuration: make ~/.bash_completion sourced by profile scriptlet
-Patch10:	bash-completion-20100203-disable-user-completion.patch
-BuildArch:	noarch
-BuildRoot:	%{_tmppath}/%{name}-%{version}
+Summary:    Programmable completion for bash
+Group:      Shells
+License:    GPL
+URL:        http://bash-completion.alioth.debian.org/
+Source0:    http://bash-completion.alioth.debian.org/files/%{name}-%{version}.tar.bz2
+# ~/.bash_completion is used for completion variables setting, it has
+# to be sourced from profile scriptlet instead of completion code itself
+Patch10:    bash-completion-1.99-disable-user-completion.patch
+BuildArch:  noarch
 
 %description
 bash-completion is a collection of shell functions that take advantage of
 the programmable completion feature of bash.
 
 %prep
-%setup -q -n %{name}-%{version}
-%patch5 -p 1
-%patch8 -p 1
+%setup -q
 %patch10 -p 1
 
 %build
@@ -48,246 +32,475 @@ the programmable completion feature of bash.
 rm -rf %{buildroot}
 %makeinstall_std
 
+chmod 644 %{buildroot}%_datadir/bash-completion/bash_completion
+
 # adapt installation
-install -d -m 755 %{buildroot}%{_datadir}/bash-completion
-mv %{buildroot}%{_sysconfdir}/bash_completion.d/* \
-    %{buildroot}%{_datadir}/bash-completion
+rm -f %{buildroot}%_sysconfdir/profile.d/bash_completion.sh
 
-pushd %{buildroot}%{_sysconfdir}/bash_completion.d
-ln -s ../..%{_datadir}/bash-completion/helpers .
-popd
+mkdir -p %{buildroot}%_sysconfdir/profile.d/
+cat <<'EOF' >> %{buildroot}%_sysconfdir/profile.d/20bash-completion.sh
+# Check for interactive bash and that we haven't already been sourced.
+if [ -z "$BASH_VERSION" -o -z "$PS1" -o -n "$BASH_COMPLETION_COMPAT_DIR" ]; then
+    return
+fi
 
-rm -f %{buildroot}%{_sysconfdir}/profile.d/bash_completion.sh
-cat <<'EOF' >> %{buildroot}%{_sysconfdir}/profile.d/20bash-completion.sh
-#!/bin/sh
-# system-wide activation
-if [ "$PS1" ]  && [ -n "$BASH" ]; then
-    # source system wide config file
-	. %{_sysconfdir}/sysconfig/bash-completion
-    # source user config file if available,
-    if [ -f $HOME/.bash_completion ]; then
-        . $HOME/.bash_completion
-    fi
+# source system wide config file
+. %_sysconfdir/sysconfig/bash-completion
 
-    if [ -n "$ENABLE_BASH_COMPLETION" ]; then
-        . %{_sysconfdir}/bash_completion
-    fi
+# source user config file if available,
+if [ -f $HOME/.bash_completion ]; then
+    . $HOME/.bash_completion
+fi
+
+if [ -n "$ENABLE_BASH_COMPLETION" ]; then
+    . %_datadir/bash-completion/bash_completion
 fi
 EOF
 
-mkdir -p %{buildroot}%{_sysconfdir}/sysconfig
-cat <<'EOF' >> %{buildroot}%{_sysconfdir}/sysconfig/bash-completion
+mkdir -p %{buildroot}%_sysconfdir/sysconfig
+cat <<'EOF' >> %{buildroot}%_sysconfdir/sysconfig/bash-completion
 # bash completion global configuration
 
 # enable bash completion
 ENABLE_BASH_COMPLETION=1
 # enable remote cvs completion
 COMP_CVS_REMOTE=
-# enable remote scp completion
-COMP_SCP_REMOTE=
 # enable configure arguments completion
 COMP_CONFIGURE_HINTS=
 # enable tar archive internal path completion
 COMP_TAR_INTERNAL_PATHS=
 # enable wireless uid completion
 COMP_IWLIST_SCAN=
-# enable installed packages completion
-COMP_RPM_DATABASE=
 # enable zeroconf hostnames completion
 COMP_KNOWN_HOSTS_WITH_AVAHI=
 # enable hostfile hostnames completion
 COMP_KNOWN_HOSTS_WITH_HOSTFILE=1
 EOF
 
-mkdir -p %{buildroot}%{_sysconfdir}/skel
-cat <<'EOF' >> %{buildroot}%{_sysconfdir}/skel/.bash_completion
+mkdir -p %{buildroot}%_sysconfdir/skel
+cat <<'EOF' >> %{buildroot}%_sysconfdir/skel/.bash_completion
 # bash completion local configuration
 
 # enable bash completion
 #ENABLE_BASH_COMPLETION=1
 # enable remote cvs completion
 #COMP_CVS_REMOTE=
-# enable remote scp completion
-#COMP_SCP_REMOTE=
 # enable configure arguments completion
 #COMP_CONFIGURE_HINTS=
 # enable tar archive internal path completion
 #COMP_TAR_INTERNAL_PATHS=
 # enable wireless uid completion
 #COMP_IWCONFIG_SCAN=
-# enable installed packages completion
-#COMP_RPM_DATABASE=
 # enable zeroconf hostnames completion
 #COMP_AVAHI_BROWSE=
 EOF
 
 cat > README.install.urpmi <<EOF
-Mandriva RPM specific notes
+Mageia RPM specific notes
 
-Programmable bash completion except for slow completions is enabled
-by default. These settings can be changed system-wide in
-/etc/sysconfig/bash-completion. Users may override these settings in
-their ~/.bash_completion files. New users get a skeleton
+Programmable bash completion is enabled by default. These settings can be
+changed system-wide in /etc/sysconfig/bash-completion. Users may override these
+settings in their ~/.bash_completion files. New users get a skeleton
 configuration file automatically, while existing users can copy
-/etc/skel/.bash_completion into their home directories if they want
-to edit their completion settings.
+/etc/skel/.bash_completion into their home directories if they want to edit
+their completion settings.
 EOF
 
-# Combine to per-package files to work around #60699
-pushd %{buildroot}%{_datadir}/bash-completion
-( echo ; cat procps ) >> sysctl
-rm procps
-( echo ; cat chsh ; echo ; cat mount ; echo ; cat rtcwake ) >> util-linux-ng
-rm chsh mount rtcwake
-( echo ; cat iconv; echo ; cat getent ) >> glibc
-rm iconv getent
-popd
-
-%bashcomp_trigger ant
-%bashcomp_trigger apt
-%bashcomp_trigger aptitude
-%bashcomp_trigger aspell
-%bashcomp_trigger autorpm
-%bashcomp_trigger bash bash-builtins
-%bashcomp_trigger bind-utils
-%bashcomp_trigger bitkeeper
-%bashcomp_trigger BitTorrent bittorrent
-%bashcomp_trigger bluez
-%bashcomp_trigger bridge-utils brctl
-%bashcomp_trigger bzip2
-%bashcomp_trigger cdrkit wodim
-%bashcomp_trigger cdrkit-genisoimage genisoimage
-%bashcomp_trigger chkconfig
-%bashcomp_trigger cksfv
-%bashcomp_trigger clisp
-%bashcomp_trigger coreutils dd
-%bashcomp_trigger cpio
-%bashcomp_trigger cups-clients cups
-%bashcomp_trigger cryptsetup
-%bashcomp_trigger cvsnt,cvs cvs
-%bashcomp_trigger dhcp-client dhclient
-%bashcomp_trigger dict
-%bashcomp_trigger dpkg
-%bashcomp_trigger dsniff
-%bashcomp_trigger expat xmlwf
-%bashcomp_trigger findutils
-%bashcomp_trigger freeciv-client,freeciv-server freeciv
-%bashcomp_trigger gcc-ada gnatmake
-%bashcomp_trigger gcc,gcc-java,fortran,gcc-c++ gcc
-%bashcomp_trigger gcl
-%bashcomp_trigger gdb
-%bashcomp_trigger gkrellm
-%bashcomp_trigger glibc
-%bashcomp_trigger gnupg2 gpg2
-%bashcomp_trigger gnupg gpg
-%bashcomp_trigger gzip
-%bashcomp_trigger heimdal-workstation heimdal
-%bashcomp_trigger hping2
-%bashcomp_trigger imagemagick
-%bashcomp_trigger initscripts service
-%bashcomp_trigger info,pinfo info
-%bashcomp_trigger ipmitool
-%bashcomp_trigger iptables
-%bashcomp_trigger jar
-%bashcomp_trigger java-sun-jre,java-gcj-compat java
-%bashcomp_trigger kdelibs dcop
-%bashcomp_trigger ldapvi
-%bashcomp_trigger lftp
-%bashcomp_trigger libxml2-progs xmllint
-%bashcomp_trigger lilo
-%bashcomp_trigger lilypond
-%bashcomp_trigger links
-%bashcomp_trigger lvm2 lvm
-%bashcomp_trigger lzma,xz lzma
-%bashcomp_trigger lzop
-%bashcomp_trigger mailman
-%bashcomp_trigger make
-%bashcomp_trigger man
-%bashcomp_trigger mc
-%bashcomp_trigger mcrypt
-%bashcomp_trigger mdadm
-%bashcomp_trigger medusa
-%bashcomp_trigger minicom
-%bashcomp_trigger mkinitrd
-%bashcomp_trigger module-init-tools
-%bashcomp_trigger mplayer
-%bashcomp_trigger mtx
-%bashcomp_trigger multisync-msynctool,msynctool msynctool
-%bashcomp_trigger munin-node
-%bashcomp_trigger mutt
-%bashcomp_trigger mysql-client mysqladmin
-%bashcomp_trigger ncftp
-%bashcomp_trigger net-tools
-%bashcomp_trigger nfs-utils rpcdebug
-%bashcomp_trigger nmap
-%bashcomp_trigger ntp-client ntpdate
-%bashcomp_trigger openldap
-%bashcomp_trigger openssh-clients ssh
-%bashcomp_trigger openssl
-%bashcomp_trigger pcmciautils cardctl
-%bashcomp_trigger perl-base perl
-%bashcomp_trigger pine
-%bashcomp_trigger pkgconfig pkg-config
-%bashcomp_trigger poldek
-%bashcomp_trigger postfix
-%bashcomp_trigger postgresql-clients postgresql
-%bashcomp_trigger povray
-%bashcomp_trigger procps sysctl
-%bashcomp_trigger pwdutils shadow
-%bashcomp_trigger util-linux-ng
-%bashcomp_trigger python
-%bashcomp_trigger qemu
-%bashcomp_trigger qt4-qtdbus qdbus
-%bashcomp_trigger quota-tools
-%bashcomp_trigger rcs
-%bashcomp_trigger rdesktop
-%bashcomp_trigger resolvconf
-%bashcomp_trigger rfkill
-%bashcomp_trigger rpm
-%bashcomp_trigger rrdtool
-%bashcomp_trigger rsync
-%bashcomp_trigger ruby-modules ri
-%bashcomp_trigger samba-client samba
-%bashcomp_trigger sbcl
-%bashcomp_trigger screen
-%bashcomp_trigger sitecopy
-%bashcomp_trigger smartmontools smartctl
-%bashcomp_trigger snownews
-%bashcomp_trigger strace
-%bashcomp_trigger svk
-%bashcomp_trigger tar
-%bashcomp_trigger tcpdump
-%bashcomp_trigger tightvnc vncviewer
-%bashcomp_trigger unace
-%bashcomp_trigger unixODBC isql
-%bashcomp_trigger unrar
-%bashcomp_trigger update-alternatives
-%bashcomp_trigger vpnc
-%bashcomp_trigger wireless-tools
-%bashcomp_trigger wvdial
-%bashcomp_trigger xhost
-%bashcomp_trigger xrandr
-%bashcomp_trigger xen xm
-%bashcomp_trigger libxml2-utils xmllint
-%bashcomp_trigger xmms
-%bashcomp_trigger xrandr
-%bashcomp_trigger xhost
-%bashcomp_trigger xz
-%bashcomp_trigger yp-tools
-%bashcomp_trigger yum
-%bashcomp_trigger yum-arch
-
-%clean
-rm -rf %{buildroot}
+%triggerpostun -- bash-completion < 2:1.90-3.mga2
+# drop dangling symlinks resulting from previous setup
+find %{_sysconfdir}/bash_completion.d -type l | xargs rm -f
 
 %files
-%defattr(-,root,root)
-%doc README README.*.urpmi TODO
-%{_sysconfdir}/bash_completion
-%{_sysconfdir}/bash_completion.d
+%doc README README.*.urpmi
 %{_sysconfdir}/profile.d/20bash-completion.sh
 %{_datadir}/bash-completion
+%{_datadir}/pkgconfig/bash-completion.pc
 %config(noreplace) %{_sysconfdir}/sysconfig/bash-completion
 %config(noreplace) %{_sysconfdir}/skel/.bash_completion
 
+
+%changelog
+
+* Mon Jan 09 2012 guillomovitch <guillomovitch> 2:1.99-1.mga2
++ Revision: 193924
+- new version
+
+* Sun Dec 18 2011 doktor5000 <doktor5000> 2:1.90-5.mga2
++ Revision: 183875
+- really fix XV EPS completion properly this time (mga#3329)
+
+  + shlomif <shlomif>
+    - SPEC cleanup - convert all tabs to spaces
+
+* Fri Dec 16 2011 shlomif <shlomif> 2:1.90-4.mga2
++ Revision: 182495
+- Bump the release to 4
+- Add a fix for the xv EPS completion - https://bugs.mageia.org/show_bug.cgi?id=3329
+
+* Thu Dec 08 2011 blino <blino> 2:1.90-3.mga2
++ Revision: 179336
+- fix path in trigger script
+
+* Sat Nov 26 2011 guillomovitch <guillomovitch> 2:1.90-2.mga2
++ Revision: 172320
+- fix upgrade trigger (thanks Anssi)
+
+* Sun Nov 06 2011 guillomovitch <guillomovitch> 2:1.90-1.mga2
++ Revision: 164312
+- new version
+- drop scp and rpm completion switch patches
+
+* Mon Feb 28 2011 ahmad <ahmad> 2:1.3-2.mga1
++ Revision: 61773
+- add patch to adjust helpers dir location to the modified layout we use (Fedora)
+
+* Mon Feb 07 2011 ahmad <ahmad> 2:1.3-1.mga1
++ Revision: 48765
+- sync with bash-completion-1.3-1.src.rpm from Mandriva:
+  o revert to stable release instead of snapshots, bumping epoch for this
+  o fix scp-remote-completion patch
+  o fix some triggers
+
+* Tue Jan 11 2011 blino <blino> 1:2.0-0.20101219.1.mga1
++ Revision: 5654
+- remove hardcoded distro name
+- imported package bash-completion
+
+
+* Sun Dec 19 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20101219.1mdv2011.0
++ Revision: 623203
+- new snapshot
+
+* Mon Dec 06 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20101206.2mdv2011.0
++ Revision: 612560
+- lsof trigger
+- new version
+- add missing configuration variable
+
+* Sat Nov 06 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20101106.1mdv2011.0
++ Revision: 594337
+- new snapshot
+- fix modules completion activation
+- drop patch4 (disable avahi completion), merged upstream with a different variable name
+
+* Sat Sep 18 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20100912.2mdv2011.0
++ Revision: 579571
+- add missing trigger to install service completion (fix #61043)
+
+* Sun Sep 12 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20100912.1mdv2011.0
++ Revision: 577777
+- new snapshot
+- fix some triggers
+
+* Sun Aug 22 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20100822.1mdv2011.0
++ Revision: 571965
+- new snapshot
+- merge completions from different files to workaround 60699 and 60706
+- new snapshot
+
+* Mon Aug 09 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20100809.1mdv2011.0
++ Revision: 568270
+- new snapshot
+
+* Thu Jun 10 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20100419.3mdv2010.1
++ Revision: 547809
+- really apply avahi-browse patch
+
+* Wed May 19 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20100419.2mdv2010.1
++ Revision: 545367
+- patch4: allow to disable slow avahi-browse completion
+- fix bluez-utils completion trigrer
+
+* Mon Apr 19 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20100419.1mdv2010.1
++ Revision: 536811
+- new snapshot
+- add rfkill trigger
+
+* Mon Apr 12 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20100412.1mdv2010.1
++ Revision: 533725
+- new snapshot (really fix #58382)
+
+* Sat Apr 03 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20100403.1mdv2010.1
++ Revision: 530892
+- new snapshot, fix #58382
+
+* Wed Mar 31 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20100331.1mdv2010.1
++ Revision: 530080
+- new snapshot
+- fix some triggers
+
+* Sun Mar 21 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20100321.2mdv2010.1
++ Revision: 526001
+- add a trigger for cryptsetup completion
+- new snapshot
+- add a trigger for mkinitrd completion
+
+* Wed Feb 03 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1:2.0-0.20100203.1mdv2010.1
++ Revision: 500535
+- new development snapshot
+- no bash completion for munin package, only for munin-node
+
+* Tue Oct 13 2009 Guillaume Rousse <guillomovitch@mandriva.org> 1:1.1-1mdv2010.0
++ Revision: 457006
+- 1.1 final
+- use auto-generated triggers to configure completions
+
+* Thu Sep 24 2009 Guillaume Rousse <guillomovitch@mandriva.org> 1:1.1-0.20090924.1mdv2010.0
++ Revision: 448520
+- new snapshot
+- drop additional source, merged upstream
+
+* Mon Sep 14 2009 Guillaume Rousse <guillomovitch@mandriva.org> 1:1.1-0.20090910.2mdv2010.0
++ Revision: 441117
+- fix rpm completion patch
+- use a script to install relevant completions, instead of triggers
+
+* Thu Sep 10 2009 Guillaume Rousse <guillomovitch@mandriva.org> 1:1.1-0.20090910.1mdv2010.0
++ Revision: 437501
+- new snapshot
+- drop merged patches
+
+* Sun Aug 30 2009 Eugeni Dodonov <eugeni@mandriva.com> 1:1.0-2mdv2010.0
++ Revision: 422708
+- Fixed bash4 issues when path contains spaces (#53145)
+
+* Tue May 05 2009 Guillaume Rousse <guillomovitch@mandriva.org> 1:1.0-1mdv2010.0
++ Revision: 372315
+- first official upstream versionned release
+
+* Thu Feb 12 2009 Guillaume Rousse <guillomovitch@mandriva.org> 20090212-1mdv2009.1
++ Revision: 339929
+- new snapshot
+- drop merged patches
+
+* Mon Feb 09 2009 Guillaume Rousse <guillomovitch@mandriva.org> 20090209-1mdv2009.1
++ Revision: 339014
+- new release
+- drop _command completion patch, it breaks strace completion, but fix sudo and other similar command (bug #47517)
+
+* Wed Feb 04 2009 Guillaume Rousse <guillomovitch@mandriva.org> 20090204-1mdv2009.1
++ Revision: 337605
+- new snapshot
+
+* Tue Feb 03 2009 Guillaume Rousse <guillomovitch@mandriva.org> 20090203-1mdv2009.1
++ Revision: 337206
+- new snapshot (more patches merged)
+- don't install additional completion as documentation, but in %%_datadir/bash-completion
+- use trigger to symlink them under %%_sysconfdir/bash_completion.d
+- drop old upgrade README
+
+* Mon Feb 02 2009 Guillaume Rousse <guillomovitch@mandriva.org> 20090202-1mdv2009.1
++ Revision: 336665
+- new snapshot
+
+* Tue Jan 13 2009 Guillaume Rousse <guillomovitch@mandriva.org> 20090108-2mdv2009.1
++ Revision: 328902
+- openssl and mkinitrd completions are now shipped in respective packages
+- fix PCI id completion
+
+* Fri Jan 09 2009 Guillaume Rousse <guillomovitch@mandriva.org> 20090108-1mdv2009.1
++ Revision: 327527
+- new version
+- rediff patches 1, 5, 8, 20, 23, 24, 25
+- drop patch 2 (alias completion)
+
+* Wed Aug 06 2008 Thierry Vignaud <tv@mandriva.org> 20060301-23mdv2009.0
++ Revision: 264328
+- rebuild early 2009.0 package (before pixel changes)
+
+* Mon Apr 14 2008 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-22mdv2009.0
++ Revision: 192686
+- rediff patch 5 to fix remote host completion with scp
+
+* Wed Mar 19 2008 Per Øyvind Karlsen <peroyvind@mandriva.org> 20060301-21mdv2008.1
++ Revision: 188796
+- /usr/lib/rpm/mandriva/macros is gone, don't try look after macros in it
+
+* Wed Mar 05 2008 Per Øyvind Karlsen <peroyvind@mandriva.org> 20060301-20mdv2008.1
++ Revision: 180166
+- be sure to read all macros from /etc/rpm/macros.d/*.macros & /usr/lib/rpm/mandriva/macros (P29)
+- add mp2 format as well for mplayer completion
+
+  + Olivier Blin <oblin@mandriva.com>
+    - restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+* Sat Dec 08 2007 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-19mdv2008.1
++ Revision: 116509
+- document configuration settings
+- non-executable and versioned profile scriptlet
+- uniformize patches format
+- better screen completion
+  fix getent completion
+
+* Wed Sep 19 2007 Per Øyvind Karlsen <peroyvind@mandriva.org> 20060301-18mdv2008.0
++ Revision: 91004
+- fix typo in P25 that broken tar lzma completion
+
+* Wed Sep 12 2007 Anssi Hannula <anssi@mandriva.org> 20060301-17mdv2008.0
++ Revision: 84667
+- update documentation, and do not show them on every upgrade
+
+* Tue Sep 04 2007 Götz Waschk <waschk@mandriva.org> 20060301-16mdv2008.0
++ Revision: 79138
+- improve rpm suggests patch
+
+* Mon Sep 03 2007 Götz Waschk <waschk@mandriva.org> 20060301-15mdv2008.0
++ Revision: 78543
+- add suggests option to rpm completion
+
+* Mon Aug 27 2007 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-14mdv2008.0
++ Revision: 71784
+- don't call wrapped command completion twice (fix #32795)
+
+* Thu Jul 19 2007 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-13mdv2008.0
++ Revision: 53705
+- make use configuration override system configuration (fix #31833)
+
+* Sun Jul 15 2007 Per Øyvind Karlsen <peroyvind@mandriva.org> 20060301-12mdv2008.0
++ Revision: 52236
+- add lzma support (P25)
+- add mplayer completion for .flv (flash video), .xvid & .divx (P24)
+
+* Fri Jun 15 2007 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-11mdv2008.0
++ Revision: 39972
+- better perl completion
+
+
+* Mon Mar 05 2007 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-10mdv2007.0
++ Revision: 133084
+- add bibtex completion (#29056)
+
+* Wed Feb 14 2007 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-9mdv2007.1
++ Revision: 121134
+- cdrkit completion
+
+* Mon Jan 22 2007 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-8mdv2007.1
++ Revision: 111626
+- fix command completion for command without completion function
+
+* Sun Jan 14 2007 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-7mdv2007.1
++ Revision: 108796
+- better completion for command accepting another command as argument
+
+* Fri Dec 08 2006 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-6mdv2007.1
++ Revision: 92220
+- add forgotten kernel completion patch, needed by dkms completion
+- Import bash-completion
+
+* Tue Sep 05 2006 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-5mdv2007.0
+- fix .bash_completion file (COMP_IWCONFIG_SCAN -> COMP_IWLIST_SCAN)
+
+* Tue Sep 05 2006 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-4mdv2007.0
+- don't source old rpm files in /etc/bash_completion.d 
+- merge mdv-specific informations in a single README.urpmi
+
+* Tue Mar 28 2006 Guillaume Rousse <guillomovitch@mandriva.org> 20060301-3mdk
+- drop additional = in alias completion (fix #21738)
+
+* Sat Mar 11 2006 Götz Waschk <waschk@mandriva.org> 20060301-2mdk
+- fix patch 17
+
+* Wed Mar 01 2006 Götz Waschk <waschk@mandriva.org> 20060301-1mdk
+- patch 17, add evince
+- drop patches 6,13,14,15,16
+
+* Wed Mar 01 2006 Götz Waschk <waschk@mandriva.org> 20060301-1mdk
+- New release 20060301
+
+* Wed Mar 01 2006 Guillaume Rousse <guillomovitch@mandriva.org> 20050721-5mdk
+- add kdvi, dvipdf and advi to dvi file completion (fix bug #20947)
+
+* Fri Jan 27 2006 Guillaume Rousse <guillomovitch@mandriva.org> 20050721-4mdk
+- fix known_host completion with bash 3.1
+
+* Thu Dec 22 2005 Guillaume Rousse <guillomovitch@mandriva.org> 20050721-3mdk
+- fix installed package completion slowliness when used outside of rpm
+  completion (thanx pterjan)
+- rediff patch8
+
+* Tue Oct 11 2005 Per Øyvind Karlsen <pkarlsen@mandriva.com> 20050721-2mdk
+- fix completion for midi files ending with MID (P14)
+- %%mkrel
+
+* Sat Jul 23 2005 Guillaume Rousse <guillomovitch@mandriva.org> 20050721-1mdk 
+- new version
+- dropped patch 0, 6, 7, 9, 11 and 12 merged upstream
+
+* Fri Jul 22 2005 Guillaume Rousse <guillomovitch@mandriva.org> 20050720-2mdk 
+- iconv patch
+
+* Thu Jul 21 2005 Götz Waschk <waschk@mandriva.org> 20050720-1mdk
+- New release 20050720
+
+* Thu Jul 14 2005 Guillaume Rousse <guillomovitch@mandriva.org> 20050712-1mdk 
+- new release
+- dropped patches 2, 3 and 4 merged upstream
+- rediff patch 5, 7
+
+* Sun Jun 26 2005 Guillaume Rousse <guillomovitch@mandriva.org> 20050121-8mdk 
+- mc completion patch
+
+* Fri Jun 24 2005 Guillaume Rousse <guillomovitch@mandriva.org> 20050121-7mdk 
+- fix ssh aliases completion
+
+* Tue Jun 14 2005 Guillaume Rousse <guillomovitch@mandriva.org> 20050121-6mdk 
+- user config file is ~/.bash_completion, not ~/.bash-completion
+
+* Tue Jun 14 2005 Guillaume Rousse <guillomovitch@mandriva.org> 20050121-5mdk 
+- rework activation procedure again
+- fix lilo labels completion
+
+* Thu May 19 2005 Guillaume Rousse <guillomovitch@mandriva.org> 20050121-4mdk 
+- make rpm slow database completion optional
+- fix mplayer options completion
+
+* Mon May 09 2005 Guillaume Rousse <guillomovitch@mandriva.org> 20050121-3mdk 
+- add a bunch of patches waiting for upstream merge (id, getent, iwconfig)
+- disable all slow completion by default, including remote scp completion
+- rework activation procedure
+- drop README.urpmi in favor of README.mdk
+- spec cleanup
+
+* Sat Apr 02 2005 Guillaume Rousse <guillomovitch@mandrake.org> 20050121-2mdk 
+- fix tcpdump & dhclient completions
+- add shellbang in profile script
+
+* Mon Jan 24 2005 Guillaume Rousse <guillomovitch@mandrake.org> 20050121-1mdk
+- New release 20050121
+
+* Thu Jan 20 2005 Goetz Waschk <waschk@linux-mandrake.com> 20050120-1mdk
+- New release 20050120
+
+* Thu Jan 13 2005 Guillaume Rousse <guillomovitch@mandrake.org> 20050112-1mdk 
+- New release
+- don't tag scripts as config
+
+* Tue Jan 04 2005 Guillaume Rousse <guillomovitch@mandrake.org> 20050103-1mdk
+- New release 20050103
+
+* Fri Oct 29 2004 Guillaume Rousse <guillomovitch@mandrake.org> 20041017-1mdk 
+- New release 20041017
+- /etc/profile.d config file is back, but disabled
+- README.urpmi
+
+* Mon Jul 12 2004 Guillaume Rousse <guillomovitch@mandrakesoft.com> 20040711-1mdk
+- New release 20040711
+
+* Sat Jul 10 2004 Guillaume Rousse <guillomovitch@mandrake.org> 20040704-2mdk 
+- no more config file in /etc/profile.d, existing users have to 
+  explicitely source /etc/bash_completion from their .bashrc now
+
+* Mon Jul 05 2004 Guillaume Rousse <guillomovitch@mandrakesoft.com> 20040704-1mdk
+- New release 20040704
+
+* Thu May 27 2004 Götz Waschk <waschk@linux-mandrake.com> 20040526-1mdk
+- fix URL
+- New release 20040526
+
+* Thu Apr 01 2004 Guillaume Rousse <guillomovitch@mandrake.org> 20040331-1mdk
+- new version
+- dropped mkisofs patch (merged upstream)
 

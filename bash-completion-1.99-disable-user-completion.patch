@@ -1,0 +1,13 @@
+diff -Naur -x '*.rej' -x '*~' -x '*.orig' bash-completion-1.99/bash_completion bash-completion-1.99-disable-user-completion/bash_completion
+--- bash-completion-1.99/bash_completion	2012-01-08 00:03:46.000000000 +0100
++++ bash-completion-1.99-disable-user-completion/bash_completion	2012-01-09 11:46:46.562818788 +0100
+@@ -1954,9 +1954,6 @@
+ fi
+ unset i _blacklist_glob
+ 
+-# source user completion file
+-[[ ${BASH_SOURCE[0]} != ~/.bash_completion && -r ~/.bash_completion ]] \
+-    && . ~/.bash_completion
+ unset -f have
+ unset have
+ 
