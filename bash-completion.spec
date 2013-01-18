@@ -1,20 +1,20 @@
 %define name    bash-completion
 %define version 1.99
-%define release %mkrel 1
+%define release %
 
-Name:       %{name}
-Version:    %{version}
-Release:    %{release}
-Epoch:      2
-Summary:    Programmable completion for bash
-Group:      Shells
-License:    GPL
-URL:        http://bash-completion.alioth.debian.org/
-Source0:    http://bash-completion.alioth.debian.org/files/%{name}-%{version}.tar.bz2
+Name:		bash-completion
+Version:	2.0
+Release:	1
+Epoch:		2
+Summary:	Programmable completion for bash
+Group:		Shells
+License:	GPL
+URL:		http://bash-completion.alioth.debian.org/
+Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{version}.tar.bz2
 # ~/.bash_completion is used for completion variables setting, it has
 # to be sourced from profile scriptlet instead of completion code itself
-Patch10:    bash-completion-1.99-disable-user-completion.patch
-BuildArch:  noarch
+Patch10:	bash-completion-1.99-disable-user-completion.patch
+BuildArch:	noarch
 
 %description
 bash-completion is a collection of shell functions that take advantage of
@@ -29,7 +29,6 @@ the programmable completion feature of bash.
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 chmod 644 %{buildroot}%_datadir/bash-completion/bash_completion
