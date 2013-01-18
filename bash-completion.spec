@@ -1,7 +1,3 @@
-%define name    bash-completion
-%define version 1.99
-%define release %
-
 Name:		bash-completion
 Version:	2.0
 Release:	1
