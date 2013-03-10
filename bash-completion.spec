@@ -1,6 +1,6 @@
 Name:		bash-completion
 Version:	2.0
-Release:	1
+Release:	2
 Epoch:		2
 Summary:	Programmable completion for bash
 Group:		Shells
@@ -100,6 +100,9 @@ configuration file automatically, while existing users can copy
 /etc/skel/.bash_completion into their home directories if they want to edit
 their completion settings.
 EOF
+
+# This comes with udevadm (systemd) these days
+rm %buildroot%_datadir/bash-completion/completions/udevadm
 
 %triggerpostun -- bash-completion < 2:1.90-3.mga2
 # drop dangling symlinks resulting from previous setup
