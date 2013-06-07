@@ -29,6 +29,9 @@ the programmable completion feature of bash.
 
 chmod 644 %{buildroot}%_datadir/bash-completion/bash_completion
 
+# (tpg) remove files which are in upstream packages
+rm -f %{buildroot}%_datadir/bash-completion/completions/{nmcli,chsh,su,cal,dmesg,eject,hexdump,ionice,look,renice,hwclock,rtcwake}
+
 # adapt installation
 rm -f %{buildroot}%_sysconfdir/profile.d/bash_completion.sh
 
