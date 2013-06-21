@@ -1,6 +1,6 @@
 Name:		bash-completion
 Version:	2.1
-Release:	1
+Release:	2
 Epoch:		2
 Summary:	Programmable completion for bash
 Group:		Shells
@@ -10,6 +10,7 @@ Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{version}.tar.b
 # ~/.bash_completion is used for completion variables setting, it has
 # to be sourced from profile scriptlet instead of completion code itself
 Patch10:	bash-completion-1.99-disable-user-completion.patch
+Patch11:	bash-completion-2.1-util-linux-223.patch
 BuildArch:	noarch
 
 %description
@@ -18,7 +19,10 @@ the programmable completion feature of bash.
 
 %prep
 %setup -q
-%patch10 -p 1
+%patch10 -p1
+%if "%{distepoch}" >= "2013.0"
+%patch11 -p1
+%endif
 
 %build
 %configure2_5x
