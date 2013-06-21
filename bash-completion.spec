@@ -98,7 +98,7 @@ cat <<'EOF' >> %{buildroot}%_sysconfdir/skel/.bash_completion
 EOF
 
 cat > README.install.urpmi <<EOF
-Mageia RPM specific notes
+%{distribution} RPM specific notes
 
 Programmable bash completion is enabled by default. These settings can be
 changed system-wide in /etc/sysconfig/bash-completion. Users may override these
