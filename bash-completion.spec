@@ -1,6 +1,6 @@
 Name:		bash-completion
 Version:	2.1
-Release:	3
+Release:	4
 Epoch:		2
 Summary:	Programmable completion for bash
 Group:		Shells
