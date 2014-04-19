@@ -1,27 +1,38 @@
-Name:		bash-completion
-Version:	2.1
-Release:	2.1
-Epoch:		2
 Summary:	Programmable completion for bash
+Name:		bash-completion
+Epoch:		2
+Version:	2.1
+Release:	8
 Group:		Shells
-License:	GPL
-URL:		http://bash-completion.alioth.debian.org/
+License:	GPLv2
+Url:		http://bash-completion.alioth.debian.org/
 Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{version}.tar.bz2
 # ~/.bash_completion is used for completion variables setting, it has
 # to be sourced from profile scriptlet instead of completion code itself
 Patch10:	bash-completion-1.99-disable-user-completion.patch
-Patch11:	bash-completion-2.1-util-linux-223.patch
+Patch11:        bash-completion-2.1-rpm-distsuffix.patch
+Patch12:	bash-completion-2.1-util-linux-223.patch
 BuildArch:	noarch
 
 %description
 bash-completion is a collection of shell functions that take advantage of
 the programmable completion feature of bash.
 
+%package devel
+Summary:	The pkgconfig for %{name}
+Group:		Development/Other
+Requires:	%{name} = %{EVRD}
+Conflicts:	%{name} < 2:2.1-7
+
+%description devel
+The pkgconfig for %{name}.
+
 %prep
 %setup -q
 %patch10 -p1
-%if "%{distepoch}" >= "2013.0"
 %patch11 -p1
+%if "%{distepoch}" >= "2013.0"
+%patch12 -p1
 %endif
 
 %build
@@ -31,23 +42,23 @@ the programmable completion feature of bash.
 %install
 %makeinstall_std
 
-chmod 644 %{buildroot}%_datadir/bash-completion/bash_completion
+chmod 644 %{buildroot}%{_datadir}/bash-completion/bash_completion
 
 # (tpg) remove files which are in upstream packages
-rm -f %{buildroot}%_datadir/bash-completion/completions/{nmcli,chsh,su,cal,dmesg,eject,hexdump,ionice,look,renice,hwclock,rtcwake}
+rm -f %{buildroot}%{_datadir}/bash-completion/completions/{nmcli,chsh,su,cal,dmesg,eject,hexdump,ionice,look,renice,hwclock,rtcwake}
 
 # adapt installation
-rm -f %{buildroot}%_sysconfdir/profile.d/bash_completion.sh
+rm -f %{buildroot}%{_sysconfdir}/profile.d/bash_completion.sh
 
-mkdir -p %{buildroot}%_sysconfdir/profile.d/
-cat <<'EOF' >> %{buildroot}%_sysconfdir/profile.d/20bash-completion.sh
+mkdir -p %{buildroot}%{_sysconfdir}/profile.d/
+cat <<'EOF' >> %{buildroot}%{_sysconfdir}/profile.d/20bash-completion.sh
 # Check for interactive bash and that we haven't already been sourced.
 if [ -z "$BASH_VERSION" -o -z "$PS1" -o -n "$BASH_COMPLETION_COMPAT_DIR" ]; then
     return
 fi
 
 # source system wide config file
-. %_sysconfdir/sysconfig/bash-completion
+. %{_sysconfdir}/sysconfig/bash-completion
 
 # source user config file if available,
 if [ -f $HOME/.bash_completion ]; then
@@ -55,12 +66,12 @@ if [ -f $HOME/.bash_completion ]; then
 fi
 
 if [ -n "$ENABLE_BASH_COMPLETION" ]; then
-    . %_datadir/bash-completion/bash_completion
+    . %{_datadir}/bash-completion/bash_completion
 fi
 EOF
 
-mkdir -p %{buildroot}%_sysconfdir/sysconfig
-cat <<'EOF' >> %{buildroot}%_sysconfdir/sysconfig/bash-completion
+mkdir -p %{buildroot}%{_sysconfdir}/sysconfig
+cat <<'EOF' >> %{buildroot}%{_sysconfdir}/sysconfig/bash-completion
 # bash completion global configuration
 
 # enable bash completion
@@ -79,8 +90,8 @@ COMP_KNOWN_HOSTS_WITH_AVAHI=
 COMP_KNOWN_HOSTS_WITH_HOSTFILE=1
 EOF
 
-mkdir -p %{buildroot}%_sysconfdir/skel
-cat <<'EOF' >> %{buildroot}%_sysconfdir/skel/.bash_completion
+mkdir -p %{buildroot}%{_sysconfdir}/skel
+cat <<'EOF' >> %{buildroot}%{_sysconfdir}/skel/.bash_completion
 # bash completion local configuration
 
 # enable bash completion
@@ -106,7 +117,7 @@ configuration file automatically, while existing users can copy
 their completion settings.
 EOF
 
-%triggerpostun -- bash-completion < 2:1.90-3.mga2
+%triggerpostun -- bash-completion < 2:1.90-3
 # drop dangling symlinks resulting from previous setup
 find %{_sysconfdir}/bash_completion.d -type l | xargs rm -f
 
@@ -114,6 +125,9 @@ find %{_sysconfdir}/bash_completion.d -type l | xargs rm -f
 %doc README README.*.urpmi
 %{_sysconfdir}/profile.d/20bash-completion.sh
 %{_datadir}/bash-completion
-%{_datadir}/pkgconfig/bash-completion.pc
 %config(noreplace) %{_sysconfdir}/sysconfig/bash-completion
 %config(noreplace) %{_sysconfdir}/skel/.bash_completion
+
+%files devel
+%{_datadir}/pkgconfig/bash-completion.pc
+
