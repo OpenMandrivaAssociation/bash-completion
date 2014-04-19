@@ -12,6 +12,7 @@ Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{version}.tar.b
 Patch10:	bash-completion-1.99-disable-user-completion.patch
 Patch11:        bash-completion-2.1-rpm-distsuffix.patch
 Patch12:	bash-completion-2.1-util-linux-223.patch
+Patch13:	bash-completion-2.1-fix-readline-quoting.patch
 BuildArch:	noarch
 
 %description
@@ -33,6 +34,9 @@ The pkgconfig for %{name}.
 %patch11 -p1
 %if "%{distepoch}" >= "2013.0"
 %patch12 -p1
+%endif
+%if "%{distepoch}" > "2014.0"
+%patch13 -p1
 %endif
 
 %build
