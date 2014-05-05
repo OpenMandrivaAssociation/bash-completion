@@ -2,7 +2,7 @@ Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
 Version:	2.1
-Release:	8
+Release:	9
 Group:		Shells
 License:	GPLv2
 Url:		http://bash-completion.alioth.debian.org/
@@ -13,6 +13,7 @@ Patch10:	bash-completion-1.99-disable-user-completion.patch
 Patch11:        bash-completion-2.1-rpm-distsuffix.patch
 Patch12:	bash-completion-2.1-util-linux-223.patch
 Patch13:	bash-completion-2.1-fix-readline-quoting.patch
+Patch14:	bash-completion-2.1-bad-array-subscript.patch
 BuildArch:	noarch
 
 %description
@@ -38,6 +39,7 @@ The pkgconfig for %{name}.
 %if "%{distepoch}" > "2014.0"
 %patch13 -p1
 %endif
+%patch14 -p1 -b .array~
 
 %build
 %configure2_5x
