@@ -2,7 +2,7 @@ Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
 Version:	2.1
-Release:	11
+Release:	12
 Group:		Shells
 License:	GPLv2
 Url:		http://bash-completion.alioth.debian.org/
