@@ -1,10 +1,11 @@
-diff -Naur bash-completion-2.1.orig/completions/rpm bash-completion-2.1/completions/rpm
---- bash-completion-2.1.orig/completions/rpm	2014-02-05 23:24:04.000000000 +0400
-+++ bash-completion-2.1/completions/rpm	2014-02-05 23:25:47.000000000 +0400
-@@ -8,7 +8,7 @@
+diff --git a/completions/rpm b/completions/rpm
+index d38c3f4..e52f41f 100644
+--- a/completions/rpm
++++ b/completions/rpm
+@@ -8,7 +8,7 @@ _rpm_installed_packages()
          /var/log/rpmpkgs -nt /var/lib/rpm/Packages ]]; then
          # using RHL 7.2 or later - this is quicker than querying the DB
-         COMPREPLY=( $( compgen -W "$( sed -ne \
+         COMPREPLY=( $( compgen -W "$( command sed -ne \
 -            's|^\([^[:space:]]\{1,\}\)-[^[:space:]-]\{1,\}-[^[:space:]-]\{1,\}\.rpm$|\1|p' \
 +            's|^\([^[:space:]]\{1,\}\)-[^[:space:]-]\{1,\}-[^[:space:]-]\{1,\}-[^[:space:]-]\{1,\}|\1|p' \
              /var/log/rpmpkgs )" -- "$cur" ) )

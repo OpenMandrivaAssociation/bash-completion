@@ -1,19 +1,17 @@
 Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
-Version:	2.1
-Release:	15
+Version:	2.3
+Release:	1
 Group:		Shells
 License:	GPLv2
-Url:		http://bash-completion.alioth.debian.org/
-Source0:	http://bash-completion.alioth.debian.org/files/%{name}-%{version}.tar.bz2
+Url:		https://github.com/scop/bash-completion/releases
+Source0:	https://github.com/scop/bash-completion/releases/download/%{version}/%{name}-%{version}.tar.xz
 # ~/.bash_completion is used for completion variables setting, it has
 # to be sourced from profile scriptlet instead of completion code itself
 Patch10:	bash-completion-1.99-disable-user-completion.patch
 Patch11:        bash-completion-2.1-rpm-distsuffix.patch
-Patch12:	bash-completion-2.1-util-linux-223.patch
 Patch13:	bash-completion-2.1-fix-readline-quoting.patch
-Patch14:	bash-completion-2.1-bad-array-subscript.patch
 BuildArch:	noarch
 
 %description
@@ -32,17 +30,13 @@ The pkgconfig for %{name}.
 %prep
 %setup -q
 %patch10 -p1
-%patch11 -p1
-%if "%{distepoch}" >= "2013.0"
-%patch12 -p1
-%endif
+#%patch11 -p1
 %if "%{distepoch}" > "2014.0"
 %patch13 -p1
 %endif
-%patch14 -p1 -b .array~
 
 %build
-%configure2_5x
+%configure
 %make
 
 %install
