@@ -122,12 +122,12 @@ EOF
 find %{_sysconfdir}/bash_completion.d -type l | xargs rm -f
 
 %files
-%doc README README.*.urpmi
+%doc README.*.urpmi
 %{_sysconfdir}/profile.d/20bash-completion.sh
 %{_datadir}/bash-completion
+%{_datadir}/cmake/bash-completion/*.cmake
 %config(noreplace) %{_sysconfdir}/sysconfig/bash-completion
 %config(noreplace) %{_sysconfdir}/skel/.bash_completion
 
 %files devel
 %{_datadir}/pkgconfig/bash-completion.pc
-
