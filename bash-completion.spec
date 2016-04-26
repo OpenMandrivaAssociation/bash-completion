@@ -2,7 +2,7 @@ Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
 Version:	2.3
-Release:	1
+Release:	2
 Group:		Shells
 License:	GPLv2
 Url:		https://github.com/scop/bash-completion/releases
@@ -13,6 +13,7 @@ Patch10:	bash-completion-1.99-disable-user-completion.patch
 Patch11:        bash-completion-2.1-rpm-distsuffix.patch
 Patch13:	bash-completion-2.1-fix-readline-quoting.patch
 BuildArch:	noarch
+Conflicts:	util-linux < 2.28
 
 %description
 bash-completion is a collection of shell functions that take advantage of
@@ -45,7 +46,7 @@ The pkgconfig for %{name}.
 chmod 644 %{buildroot}%{_datadir}/bash-completion/bash_completion
 
 # (tpg) remove files which are in upstream packages
-rm -f %{buildroot}%{_datadir}/bash-completion/completions/{nmcli,chsh,su,cal,dmesg,eject,hexdump,ionice,look,renice,hwclock,rtcwake}
+rm -f %{buildroot}%{_datadir}/bash-completion/completions/{nmcli,chsh,su,cal,dmesg,eject,hexdump,ionice,look,mount,umount,renice,hwclock,rtcwake}
 
 # adapt installation
 rm -f %{buildroot}%{_sysconfdir}/profile.d/bash_completion.sh
