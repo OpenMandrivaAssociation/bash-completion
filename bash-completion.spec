@@ -2,7 +2,7 @@ Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
 Version:	2.3
-Release:	2
+Release:	3
 Group:		Shells
 License:	GPLv2
 Url:		https://github.com/scop/bash-completion/releases
@@ -13,7 +13,6 @@ Patch10:	bash-completion-1.99-disable-user-completion.patch
 Patch11:        bash-completion-2.1-rpm-distsuffix.patch
 Patch13:	bash-completion-2.1-fix-readline-quoting.patch
 BuildArch:	noarch
-Conflicts:	util-linux < 2.28
 
 %description
 bash-completion is a collection of shell functions that take advantage of
