@@ -1,7 +1,7 @@
 Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
-Version:	2.4
+Version:	2.5
 Release:	1
 Group:		Shells
 License:	GPLv2
