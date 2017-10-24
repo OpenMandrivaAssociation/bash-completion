@@ -1,13 +1,15 @@
-diff -Naur -x '*.rej' -x '*~' -x '*.orig' bash-completion-1.99/bash_completion bash-completion-1.99-disable-user-completion/bash_completion
---- bash-completion-1.99/bash_completion	2012-01-08 00:03:46.000000000 +0100
-+++ bash-completion-1.99-disable-user-completion/bash_completion	2012-01-09 11:46:46.562818788 +0100
-@@ -1954,9 +1954,6 @@
+diff --git a/bash_completion b/bash_completion
+index d16b10a..537dcb8 100644
+--- a/bash_completion
++++ b/bash_completion
+@@ -2077,10 +2077,6 @@ if [[ -d $compat_dir && -r $compat_dir && -x $compat_dir ]]; then
  fi
- unset i _blacklist_glob
+ unset compat_dir i _blacklist_glob
  
 -# source user completion file
--[[ ${BASH_SOURCE[0]} != ~/.bash_completion && -r ~/.bash_completion ]] \
--    && . ~/.bash_completion
- unset -f have
- unset have
+-user_completion=${BASH_COMPLETION_USER_FILE:-~/.bash_completion}
+-[[ ${BASH_SOURCE[0]} != $user_completion && -r $user_completion ]] \
+-    && . $user_completion
+ unset user_completion
  
+ unset -f have
