@@ -1,8 +1,8 @@
 Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
-Version:	2.7
-Release:	2
+Version:	2.8
+Release:	1
 Group:		Shells
 License:	GPLv2
 Url:		https://github.com/scop/bash-completion/releases
@@ -10,7 +10,6 @@ Source0:	https://github.com/scop/bash-completion/releases/download/%{version}/%{
 # ~/.bash_completion is used for completion variables setting, it has
 # to be sourced from profile scriptlet instead of completion code itself
 Patch10:	bash-completion-1.99-disable-user-completion.patch
-Patch11:        bash-completion-2.1-rpm-distsuffix.patch
 Patch13:	bash-completion-2.1-fix-readline-quoting.patch
 BuildArch:	noarch
 
@@ -29,18 +28,14 @@ The pkgconfig for %{name}.
 
 %prep
 %setup -q
-%patch10 -p1
-#%patch11 -p1
-%if "%{distepoch}" > "2014.0"
-%patch13 -p1
-%endif
+%autopatch -p1
 
 %build
 %configure
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 chmod 644 %{buildroot}%{_datadir}/bash-completion/bash_completion
 
