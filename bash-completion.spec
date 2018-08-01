@@ -1,8 +1,10 @@
+%define _python_bytecompile_errors_terminate_build 0
+
 Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
 Version:	2.8
-Release:	1
+Release:	3
 Group:		Shells
 License:	GPLv2
 Url:		https://github.com/scop/bash-completion/releases
