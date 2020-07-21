@@ -4,7 +4,7 @@ Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
 Version:	2.10
-Release:	1
+Release:	3
 Group:		Shells
 License:	GPLv2
 Url:		https://github.com/scop/bash-completion/releases
@@ -12,6 +12,10 @@ Source0:	https://github.com/scop/bash-completion/releases/download/%{version}/%{
 # ~/.bash_completion is used for completion variables setting, it has
 # to be sourced from profile scriptlet instead of completion code itself
 Patch10:	bash-completion-1.99-disable-user-completion.patch
+# libarchive tar is better than gtar in many ways -- among other things
+# its ability to un"tar" zip files, iso files and more. Let's teach
+# bash-completions what our tar can do.
+Patch11:	bash-completion-2.10-tar-libarchive-extras.patch
 Patch13:	bash-completion-2.1-fix-readline-quoting.patch
 BuildArch:	noarch
 
@@ -29,8 +33,7 @@ Conflicts:	%{name} < 2:2.1-7
 The pkgconfig for %{name}.
 
 %prep
-%setup -q
-%autopatch -p1
+%autosetup -p1
 
 %build
 %configure

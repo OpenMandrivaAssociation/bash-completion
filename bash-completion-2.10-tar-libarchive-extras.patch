@@ -1,0 +1,12 @@
+diff -up bash-completion-2.10/completions/tar.omv~ bash-completion-2.10/completions/tar
+--- bash-completion-2.10/completions/tar.omv~	2020-07-21 14:57:28.637066002 +0200
++++ bash-completion-2.10/completions/tar	2020-07-21 15:02:59.778198636 +0200
+@@ -438,7 +438,7 @@ __tar_cleanup_prev()
+ 
+ __tar_detect_ext()
+ {
+-    local tars='@(@(tar|gem|spkg)?(.@(Z|[bgx]z|bz2|lz?(ma|o)|zst))|t@([abglx]z|b?(z)2|zst))'
++    local tars='@(@(tar|gem|spkg|pax|cpio|iso|zip|shar|a|xar|lha|lzh|rar|cab|7z|jar|apk)?(.@(Z|[bgx]z|bz2|lz?(ma|o)|zst))|t@([abglx]z|b?(z)2|zst))'
+     ext="$tars"
+ 
+     case "$tar_mode_arg" in
