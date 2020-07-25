@@ -1,7 +1,7 @@
-diff -Naur -x '*~' bash-completion-2.1/bash_completion bash-completion-2.1-fix-readline-quoting/bash_completion
---- bash-completion-2.1/bash_completion	2013-04-05 12:55:51.000000000 +0200
-+++ bash-completion-2.1-fix-readline-quoting/bash_completion	2014-03-18 20:43:15.922496482 +0100
-@@ -536,13 +536,23 @@
+diff -uraN bash-completion-2.11/bash_completion omv-bash-completion-2.11/bash_completion
+--- bash-completion-2.11/bash_completion	2020-07-25 13:49:49.000000000 +0200
++++ omv-bash-completion-2.11/bash_completion	2020-07-25 14:28:24.930041572 +0200
+@@ -542,13 +542,23 @@
  # @param $2  Name of variable to return result to
  _quote_readline_by_ref()
  {
@@ -24,5 +24,5 @@ diff -Naur -x '*~' bash-completion-2.1/bash_completion bash-completion-2.1-fix-r
 +    # and passed to this function as e.g.: file\ with\ spaces
 +    [[ ${!2} == *\\* ]] && printf -v $2 %s "${1//\\\\/\\}"
      # If result becomes quoted like this: $'string', re-evaluate in order to
-     # drop the additional quoting.  See also: http://www.mail-archive.com/
-     # bash-completion-devel@lists.alioth.debian.org/msg01942.html
+     # drop the additional quoting.  See also:
+     # https://www.mail-archive.com/bash-completion-devel@lists.alioth.debian.org/msg01942.html
