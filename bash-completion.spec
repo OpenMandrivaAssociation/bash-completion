@@ -4,7 +4,7 @@ Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
 Version:	2.11
-Release:	1
+Release:	2
 Group:		Shells
 License:	GPLv2
 Url:		https://github.com/scop/bash-completion/releases
@@ -24,13 +24,13 @@ bash-completion is a collection of shell functions that take advantage of
 the programmable completion feature of bash.
 
 %package devel
-Summary:	The pkgconfig for %{name}
+Summary:	Development files for for %{name}
 Group:		Development/Other
 Requires:	%{name} = %{EVRD}
 Conflicts:	%{name} < 2:2.1-7
 
 %description devel
-The pkgconfig for %{name}.
+Development files and headers files for %{name}.
 
 %prep
 %autosetup -p1
@@ -53,7 +53,7 @@ rm -f %{buildroot}%{_sysconfdir}/profile.d/bash_completion.sh
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d/
 cat <<'EOF' >> %{buildroot}%{_sysconfdir}/profile.d/20bash-completion.sh
 # Check for interactive bash and that we haven't already been sourced.
-if [ -z "$BASH_VERSION" -o -z "$PS1" -o -n "$BASH_COMPLETION_COMPAT_DIR" ]; then
+if [ -z "$BASH_VERSION" ] || [ -z "$PS1" ] || [ -n "$BASH_COMPLETION_COMPAT_DIR" ]; then
     return
 fi
 
@@ -108,26 +108,17 @@ cat <<'EOF' >> %{buildroot}%{_sysconfdir}/skel/.bash_completion
 #COMP_AVAHI_BROWSE=
 EOF
 
-cat > README.install.urpmi <<EOF
-Programmable bash completion is enabled by default. These settings can be
-changed system-wide in /etc/sysconfig/bash-completion. Users may override these
-settings in their ~/.bash_completion files. New users get a skeleton
-configuration file automatically, while existing users can copy
-/etc/skel/.bash_completion into their home directories if they want to edit
-their completion settings.
-EOF
-
 %triggerpostun -- bash-completion < 2:1.90-3
 # drop dangling symlinks resulting from previous setup
 find %{_sysconfdir}/bash_completion.d -type l | xargs rm -f
 
 %files
-%doc README.*.urpmi
+%doc README*
 %{_sysconfdir}/profile.d/20bash-completion.sh
 %{_datadir}/bash-completion
-%{_datadir}/cmake/bash-completion/*.cmake
 %config(noreplace) %{_sysconfdir}/sysconfig/bash-completion
 %config(noreplace) %{_sysconfdir}/skel/.bash_completion
 
 %files devel
 %{_datadir}/pkgconfig/bash-completion.pc
+%{_datadir}/cmake/bash-completion/*.cmake
