@@ -3,8 +3,8 @@
 Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
-Version:	2.11
-Release:	3
+Version:	2.12.0
+Release:	1
 Group:		Shells
 License:	GPLv2
 Url:		https://github.com/scop/bash-completion/releases
@@ -16,7 +16,6 @@ Patch10:	bash-completion-1.99-disable-user-completion.patch
 # its ability to un"tar" zip files, iso files and more. Let's teach
 # bash-completions what our tar can do.
 Patch11:	bash-completion-2.10-tar-libarchive-extras.patch
-Patch13:	bash-completion-2.1-fix-readline-quoting.patch
 BuildArch:	noarch
 
 %description
@@ -108,13 +107,10 @@ cat <<'EOF' >> %{buildroot}%{_sysconfdir}/skel/.bash_completion
 #COMP_AVAHI_BROWSE=
 EOF
 
-%triggerpostun -- bash-completion < 2:1.90-3
-# drop dangling symlinks resulting from previous setup
-find %{_sysconfdir}/bash_completion.d -type l | xargs rm -f
-
 %files
 %doc README*
 %{_sysconfdir}/profile.d/20bash-completion.sh
+%{_sysconfdir}/bash_completion.d
 %{_datadir}/bash-completion
 %config(noreplace) %{_sysconfdir}/sysconfig/bash-completion
 %config(noreplace) %{_sysconfdir}/skel/.bash_completion
