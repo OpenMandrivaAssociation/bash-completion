@@ -4,14 +4,11 @@ Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
 Version:	2.12.0
-Release:	1
+Release:	2
 Group:		Shells
 License:	GPLv2
 Url:		https://github.com/scop/bash-completion/releases
 Source0:	https://github.com/scop/bash-completion/releases/download/%{version}/%{name}-%{version}.tar.xz
-# ~/.bash_completion is used for completion variables setting, it has
-# to be sourced from profile scriptlet instead of completion code itself
-Patch10:	bash-completion-1.99-disable-user-completion.patch
 # libarchive tar is better than gtar in many ways -- among other things
 # its ability to un"tar" zip files, iso files and more. Let's teach
 # bash-completions what our tar can do.
