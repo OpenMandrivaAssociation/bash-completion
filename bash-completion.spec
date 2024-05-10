@@ -1,10 +1,11 @@
 %define _python_bytecompile_errors_terminate_build 0
+%undefine _debugsource_packages
 
 Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
-Version:	2.12.0
-Release:	2
+Version:	2.14.0
+Release:	1
 Group:		Shells
 License:	GPLv2
 Url:		https://github.com/scop/bash-completion/releases
@@ -14,6 +15,7 @@ Source0:	https://github.com/scop/bash-completion/releases/download/%{version}/%{
 # bash-completions what our tar can do.
 Patch11:	bash-completion-2.10-tar-libarchive-extras.patch
 BuildArch:	noarch
+BuildSystem:	autotools
 
 %description
 bash-completion is a collection of shell functions that take advantage of
@@ -28,16 +30,7 @@ Conflicts:	%{name} < 2:2.1-7
 %description devel
 Development files and headers files for %{name}.
 
-%prep
-%autosetup -p1
-
-%build
-%configure
-%make_build
-
-%install
-%make_install
-
+%install -a
 chmod 644 %{buildroot}%{_datadir}/bash-completion/bash_completion
 
 # (tpg) remove files which are in upstream packages
