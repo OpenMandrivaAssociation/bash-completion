@@ -4,7 +4,7 @@
 Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
-Version:	2.14.0
+Version:	2.15.0
 Release:	1
 Group:		Shells
 License:	GPLv2
