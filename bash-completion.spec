@@ -5,7 +5,7 @@ Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
 Version:	2.16.0
-Release:	1
+Release:	2
 Group:		Shells
 License:	GPLv2
 Url:		https://github.com/scop/bash-completion/releases
@@ -34,7 +34,7 @@ Development files and headers files for %{name}.
 chmod 644 %{buildroot}%{_datadir}/bash-completion/bash_completion
 
 # (tpg) remove files which are in upstream packages
-rm -f %{buildroot}%{_datadir}/bash-completion/completions/{nmcli,chsh,su,cal,dmesg,eject,hexdump,ionice,look,mount,umount,renice,hwclock,rtcwake,rfkill}
+rm -f %{buildroot}%{_datadir}/bash-completion/completions/{nmcli,chsh,su,cal,dmesg,eject,hexdump,ionice,look,mount,umount,renice,hwclock,rtcwake,rfkill,secret-tool}
 
 # adapt installation
 rm -f %{buildroot}%{_sysconfdir}/profile.d/bash_completion.sh
