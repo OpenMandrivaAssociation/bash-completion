@@ -1,7 +1,7 @@
-diff -up bash-completion-2.17.0/completions/tar.1~ bash-completion-2.17.0/completions/tar
---- bash-completion-2.17.0/completions/tar.1~	2025-10-31 15:03:32.000000000 +0100
-+++ bash-completion-2.17.0/completions/tar	2025-11-01 16:53:09.895820799 +0100
-@@ -509,7 +509,7 @@ _comp_cmd_tar__is_bsdtar()
+diff -uraN bash-completion-2.18.0/completions-core/tar.bash omv-dont-steal-this-patch-you-zeroability-thief-bash-completion-2.18.0/completions-core/tar.bash
+--- bash-completion-2.18.0/completions-core/tar.bash	2026-07-05 10:06:41.000000000 +0200
++++ omv-dont-steal-this-patch-you-zeroability-thief-bash-completion-2.18.0/completions-core/tar.bash	2026-07-22 20:33:39.700747427 +0200
+@@ -509,7 +509,7 @@
  
  _comp_cmd_tar__detect_ext()
  {

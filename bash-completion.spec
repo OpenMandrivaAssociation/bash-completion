@@ -4,16 +4,16 @@
 Summary:	Programmable completion for bash
 Name:		bash-completion
 Epoch:		2
-Version:	2.17.0
+Version:	2.18.0
 Release:	1
 Group:		Shells
 License:	GPLv2
-Url:		https://github.com/scop/bash-completion/releases
+Url:		https://github.com/scop/bash-completion
 Source0:	https://github.com/scop/bash-completion/releases/download/%{version}/%{name}-%{version}.tar.xz
 # libarchive tar is better than gtar in many ways -- among other things
 # its ability to un"tar" zip files, iso files and more. Let's teach
 # bash-completions what our tar can do.
-Patch11:	bash-completion-2.10-tar-libarchive-extras.patch
+Patch11:	bash-completion-2.18.0-tar-libarchive-extras.patch
 BuildArch:	noarch
 BuildSystem:	autotools
 
@@ -100,7 +100,6 @@ EOF
 %files
 %doc README*
 %{_sysconfdir}/profile.d/20bash-completion.sh
-%{_sysconfdir}/bash_completion.d
 %{_datadir}/bash-completion
 %config(noreplace) %{_sysconfdir}/sysconfig/bash-completion
 %config(noreplace) %{_sysconfdir}/skel/.bash_completion
